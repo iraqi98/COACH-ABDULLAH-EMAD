@@ -203,7 +203,8 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .wtab.on{background:var(--gold);color:var(--dark);border-color:var(--gold);}
 .wtab:hover:not(.on){border-color:var(--gold);color:var(--gold);}
 .wtab .wi{display:block;font-size:18px;margin-bottom:5px;}
-.wtab .wr{display:block;font-size:10px;margin-top:5px;opacity:.82;line-height:1.5;}
+.wtab .wr{display:block;font-size:10px;margin-top:5px;color:#39FF14;opacity:.95;line-height:1.5;}
+.wtab.on .wr{color:var(--dark);}
 .wcont{display:none;}.wcont.on{display:block;}
 .dgrid{max-width:940px;margin:18px auto 52px;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:13px;}
 .dc{background:linear-gradient(180deg,#1b1b1b,#141414);border:1px solid #242424;border-radius:7px;overflow:hidden;transition:border-color .2s,transform .2s;}
@@ -219,7 +220,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .dcb{padding:14px 17px;}
 .wusec{margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #1a1a1a;}
 .stl{font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:6px;}
-.wuli{font-size:12px;color:#5a5a5a;padding:3px 0;display:flex;align-items:center;gap:6px;}
+.wuli{font-size:12px;color:#39FF14;padding:3px 0;display:flex;align-items:center;gap:6px;}
 .wuli::before{content:'›';color:var(--gold);font-size:14px;line-height:1;}
 .exi{padding:10px 0;border-bottom:1px solid #1d1d1d;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:start;gap:10px;}
 .exi:last-child{border-bottom:none;}
@@ -397,7 +398,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 /* DATA */
 const DAYS=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
 const WKS=[
-  {lbl:'الأسبوع الأول', reps:'3 × 20',icon:'🟢',int:'أوزان خفيفة'},
+  {lbl:'الأسبوع الأول', reps:'4 × 20',icon:'🟢',int:'أوزان خفيفة'},
   {lbl:'الأسبوع الثاني',reps:'3 × 15',icon:'🟡',int:'أوزان متوسطة'},
   {lbl:'الأسبوع الثالث',reps:'3 × 10',icon:'🟠',int:'أوزان ثقيلة'},
   {lbl:'الأسبوع الرابع',reps:'3 × 6 أو 3 × 5', icon:'🔴',int:'أوزان أثقل'},
@@ -405,20 +406,20 @@ const WKS=[
   {lbl:'الأسبوع السادس',reps:'12 - 9 - 7 - 5', icon:'⚫',int:'دروب سيت'},
 ];
 const DEFAULT_WARMUPS=[
-  'إحماء عام جهاز الجري لمدة 5 دقائق، إحماء خاص للعضلة المستهدفة 2×25، إحماء عضلة البايسبس',
   'إحماء عام جهاز الجري لمدة 5 دقائق، إحماء خاص للعضلة المستهدفة 2×25',
   'إحماء عام جهاز الجري لمدة 5 دقائق، إحماء خاص للعضلة المستهدفة 2×25',
   'إحماء عام جهاز الجري لمدة 5 دقائق، إحماء خاص للعضلة المستهدفة 2×25',
-  '',
-  '',
-  ''
+  'إحماء عام جهاز الجري لمدة 5 دقائق، إحماء خاص للعضلة المستهدفة 2×25',
+  'جهاز جري 5 دق، إحماء خاص للعضلة المستهدفة 2×25، تمطية العضلات بعد التمرين',
+  'جهاز بايسكل، تمارين سويدية للعضلة المستهدفة',
+  'إحماء خاص للعضلة المستهدفة 2×25'
 ];
 const DEFAULT_DAY_NOTES=[
-  'ملاحظة: تمطية للعضلات المستهدفة بعد نهاية التمرين',
+  'ملاحظة: تمطية للعضلات المستهدفة بعد نهاية التمرين\nكارديو جبلي 30 دق\nتمارين بطن',
   'ملاحظة: تمطية للعضلات المستهدفة بعد نهاية التمرين\nكارديو درج لمدة 30 دقيقة',
-  'ملاحظة: تمطية للعضلات المستهدفة\nكارديو نط الحبل 5 جولات، كل جولة لمدة دقيقة',
+  'ملاحظة: تمطية للعضلات المستهدفة\nكارديو نط الحبل 5 جولات، كل جولة لمدة دقيقة\nتمارين بطن',
   'ملاحظة: تمطية العضلات المستهدفة',
-  '',
+  'تمارين بطن\nكارديو جبلي 30 دق',
   '',
   ''
 ];

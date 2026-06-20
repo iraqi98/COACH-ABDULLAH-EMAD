@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الكابتن عبدالله عماد | مدرب لياقة بدنية احترافي</title>
+<meta name="description" content="الكابتن عبدالله عماد - مدرب لياقة بدنية احترافي. برامج تخسيس وبناء عضلات وتدريب شخصي، بالإضافة إلى متجر مكملات غذائية ومعدات رياضية.">
+<meta name="keywords" content="مدرب لياقة بدنية, كابتن عبدالله عماد, تخسيس, بناء عضلات, مكملات غذائية, تدريب شخصي">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;800;900&family=Marcellus&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#08070a;
+    --black-2:#0f0d12;
+    --black-3:#16131a;
+    --gold:#c9a24a;
+    --gold-light:#e8cd87;
+    --gold-deep:#8f6f24;
+    --white:#f7f5f0;
+    --grey:#9a948c;
+    --glass: rgba(247,245,240,0.04);
+    --glass-border: rgba(201,162,74,0.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Tajawal','Cairo',sans-serif;
+    overflow-x:hidden;
+    line-height:1.7;
+  }
+  .en{font-family:'Cairo','Tajawal',sans-serif;}
+  ::selection{background:var(--gold);color:#000;}
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold-deep),var(--gold));border-radius:10px;}
+
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+
+  .container{max-width:1240px;margin:0 auto;padding:0 24px;}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--gold);font-weight:700;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--gold);}
+
+  h1,h2,h3{font-weight:800;letter-spacing:.5px;}
+  .gold{color:var(--gold);}
+  .gold-grad{
+    background:linear-gradient(120deg,var(--gold-light),var(--gold) 40%,var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ===== Loader ===== */
+  #loader{position:fixed;inset:0;background:var(--black);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .7s ease, visibility .7s ease;}
+  #loader.hide{opacity:0;visibility:hidden;}
+  .loader-mark{font-family:'Marcellus',serif;font-size:34px;letter-spacing:6px;color:var(--gold);position:relative;}
+  .loader-mark::after{content:"";position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);animation:loadbar 1.4s ease forwards;}
+  @keyframes loadbar{to{width:100%;}}
+
+  /* ===== Navbar ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    padding:18px 0;transition:all .4s ease;
+    background:transparent;
+  }
+  header.scrolled{
+    background:rgba(8,7,10,0.85);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--glass-border);
+    padding:12px 0;
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Marcellus',serif;font-size:22px;letter-spacing:2px;color:var(--white);display:flex;flex-direction:column;line-height:1.1;}
+  .logo span{color:var(--gold);font-size:11px;letter-spacing:4px;font-family:'Tajawal';font-weight:600;}
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{font-size:15px;font-weight:500;color:var(--grey);position:relative;transition:.3s;padding:4px 0;}
+  .nav-links a:hover, .nav-links a.active{color:var(--gold);}
+  .nav-links a::after{content:"";position:absolute;bottom:-4px;right:0;width:0;height:1px;background:var(--gold);transition:.35s;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    background:linear-gradient(120deg,var(--gold-light),var(--gold));
+    color:#0a0908;padding:11px 26px;border-radius:30px;font-weight:700;font-size:14px;
+    box-shadow:0 6px 22px rgba(201,162,74,.25);transition:.3s;
+  }
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(201,162,74,.4);}
+  .lang-switch{
+    border:1px solid var(--glass-border);color:var(--gold);font-size:12px;font-weight:700;
+    padding:7px 14px;border-radius:20px;letter-spacing:1px;background:var(--glass);
+  }
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1100;}
+  .burger span{width:26px;height:2px;background:var(--gold);transition:.3s;}
+
+  /* ===== Hero ===== */
+  .hero{position:relative;height:100vh;min-height:680px;display:flex;align-items:center;overflow:hidden;}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) saturate(1.1);}
+  .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(ellipse at 30% 100%, rgba(201,162,74,.18), transparent 55%),
+      linear-gradient(180deg, rgba(8,7,10,.55) 0%, rgba(8,7,10,.35) 40%, rgba(8,7,10,.95) 100%);
+  }
+  .hero-content{position:relative;z-index:2;width:100%;}
+  .hero-tag{
+    display:inline-block;font-size:13px;letter-spacing:4px;color:var(--gold-light);
+    border:1px solid var(--glass-border);padding:8px 20px;border-radius:30px;background:var(--glass);
+    margin-bottom:26px;opacity:0;animation:riseIn .9s .2s forwards;
+  }
+  .hero h1{
+    font-size:clamp(44px,7.5vw,96px);line-height:1.05;margin-bottom:10px;
+    opacity:0;animation:riseIn 1s .4s forwards;
+  }
+  .hero h1 small{display:block;font-size:.32em;font-weight:500;color:var(--grey);letter-spacing:2px;margin-top:14px;}
+  .hero p.lead{
+    max-width:560px;font-size:18px;color:#cfcabf;margin:24px 0 38px;
+    opacity:0;animation:riseIn 1s .6s forwards;
+  }
+  .hero-btns{display:flex;gap:18px;flex-wrap:wrap;opacity:0;animation:riseIn 1s .8s forwards;}
+  @keyframes riseIn{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:17px 34px;border-radius:6px;
+    font-weight:700;font-size:15.5px;transition:.35s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+  }
+  .btn-primary{background:linear-gradient(120deg,var(--gold-light),var(--gold));color:#0a0908;box-shadow:0 10px 30px rgba(201,162,74,.25);}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(201,162,74,.4);}
+  .btn-outline{border:1px solid var(--glass-border);color:var(--white);background:var(--glass);backdrop-filter:blur(6px);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);}
+
+  .scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--grey);font-size:12px;letter-spacing:2px;}
+  .scroll-cue .line{width:1px;height:46px;background:linear-gradient(var(--gold),transparent);animation:scrollMove 2s infinite;}
+  @keyframes scrollMove{0%{opacity:1;}100%{opacity:0;transform:scaleY(.4);transform-origin:top;}}
+
+  /* ===== Section generic ===== */
+  section{padding:120px 0;position:relative;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head h2{font-size:clamp(30px,4.5vw,48px);}
+  .section-head p{color:var(--grey);font-size:16.5px;margin-top:16px;}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent);}
+
+  /* fade up on scroll */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s ease, transform .9s ease;}
+  .reveal.show{opacity:1;transform:translateY(0);}
+
+  /* ===== About ===== */
+  #about{background:var(--black-2);}
+  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:center;}
+  .about-photo{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/5;border:1px solid var(--glass-border);}
+  .about-photo img{width:100%;height:100%;object-fit:cover;}
+  .about-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.6));}
+  .about-photo .badge{
+    position:absolute;bottom:22px;right:22px;left:22px;background:rgba(8,7,10,.7);backdrop-filter:blur(10px);
+    border:1px solid var(--glass-border);border-radius:10px;padding:16px 18px;display:flex;justify-content:space-between;
+  }
+  .about-photo .badge div{text-align:center;}
+  .about-photo .badge strong{display:block;color:var(--gold);font-size:22px;}
+  .about-photo .badge span{font-size:12px;color:var(--grey);}
+
+  .about-text p{color:#cfcabf;margin-bottom:18px;font-size:16px;}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:38px 0;}
+  .stat-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:22px 16px;text-align:center;
+    transition:.35s;
+  }
+  .stat-card:hover{transform:translateY(-6px);border-color:var(--gold);background:rgba(201,162,74,.06);}
+  .stat-card strong{font-size:30px;color:var(--gold);display:block;font-family:'Marcellus',serif;}
+  .stat-card span{font-size:13px;color:var(--grey);}
+
+  .cert-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;}
+  .cert-chip{
+    border:1px solid var(--glass-border);padding:10px 18px;border-radius:30px;font-size:13.5px;color:var(--gold-light);
+    background:var(--glass);display:flex;align-items:center;gap:8px;
+  }
+  .cert-chip::before{content:"✓";color:var(--gold);font-weight:900;}
+
+  /* ===== Programs ===== */
+  .prog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;}
+  .prog-card{
+    background:linear-gradient(160deg,var(--black-3),var(--black-2));
+    border:1px solid var(--glass-border);border-radius:16px;padding:36px 28px;position:relative;overflow:hidden;
+    transition:.4s cubic-bezier(.2,.8,.2,1);
+  }
+  .prog-card::before{
+    content:"";position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 30% 0%, rgba(201,162,74,.18), transparent 60%);
+    transition:.4s;
+  }
+  .prog-card:hover{transform:translateY(-10px);border-color:var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .prog-card:hover::before{opacity:1;}
+  .prog-num{font-family:'Marcellus',serif;font-size:14px;color:var(--gold);letter-spacing:2px;}
+  .prog-card h3{font-size:21px;margin:18px 0 12px;}
+  .prog-card p{color:var(--grey);font-size:14.5px;margin-bottom:22px;}
+  .prog-card ul{margin-bottom:24px;}
+  .prog-card ul li{font-size:13.5px;color:#cfcabf;padding:6px 0;border-top:1px solid rgba(255,255,255,.05);display:flex;gap:8px;align-items:center;}
+  .prog-card ul li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);}
+  .prog-link{font-size:13.5px;font-weight:700;color:var(--gold);display:inline-flex;align-items:center;gap:6px;}
+  .prog-link svg{transition:.3s;width:14px;}
+  .prog-card:hover .prog-link svg{transform:translateX(-4px);}
+
+  /* ===== Store ===== */
+  #store{background:var(--black-2);}
+  .filter-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:46px;}
+  .filter-btn{
+    padding:10px 20px;border-radius:30px;border:1px solid var(--glass-border);font-size:13.5px;color:var(--grey);
+    background:var(--glass);transition:.3s;font-weight:600;
+  }
+  .filter-btn.active, .filter-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,162,74,.08);}
+  .store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .product-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;
+    transition:.35s; display:flex;flex-direction:column;
+  }
+  .product-card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.45);}
+  .product-img{aspect-ratio:1/1;background:linear-gradient(135deg,#1c1812,#0c0a08);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+  .product-img .icon{font-size:46px;}
+  .product-cat{position:absolute;top:12px;right:12px;background:rgba(8,7,10,.7);color:var(--gold-light);font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--glass-border);}
+  .product-body{padding:20px;display:flex;flex-direction:column;flex:1;}
+  .product-body h4{font-size:16.5px;margin-bottom:8px;}
+  .product-body p{font-size:13px;color:var(--grey);margin-bottom:16px;flex:1;}
+  .product-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+  .price{color:var(--gold);font-weight:800;font-size:17px;font-family:'Marcellus',serif;}
+  .wa-mini{background:#1f3d2f;color:#7be3a8;border:1px solid rgba(123,227,168,.3);padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px;transition:.3s;}
+  .wa-mini:hover{background:#24c266;color:#06150c;border-color:#24c266;}
+
+  /* ===== BMI ===== */
+  .bmi-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .bmi-card{
+    background:linear-gradient(160deg,var(--black-3),var(--black-2));border:1px solid var(--glass-border);
+    border-radius:20px;padding:44px;
+  }
+  .field{margin-bottom:22px;}
+  .field label{display:block;font-size:13.5px;color:var(--grey);margin-bottom:8px;letter-spacing:.5px;}
+  .field input, .field select{
+    width:100%;background:rgba(255,255,255,.03);border:1px solid var(--glass-border);border-radius:8px;
+    padding:14px 16px;color:var(--white);font-size:15px;font-family:inherit;transition:.3s;
+  }
+  .field input:focus, .field select:focus{outline:none;border-color:var(--gold);background:rgba(201,162,74,.05);}
+  .calc-btn{width:100%;margin-top:8px;padding:16px;border-radius:8px;background:linear-gradient(120deg,var(--gold-light),var(--gold));color:#0a0908;font-weight:800;font-size:15.5px;transition:.3s;}
+  .calc-btn:hover{box-shadow:0 12px 30px rgba(201,162,74,.35);transform:translateY(-2px);}
+
+  .bmi-result{
+    background:var(--glass);border:1px dashed var(--glass-border);border-radius:20px;padding:44px;text-align:center;
+    min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .bmi-num{font-size:64px;font-family:'Marcellus',serif;color:var(--gold);line-height:1;}
+  .bmi-cat{margin-top:14px;font-size:18px;font-weight:700;}
+  .bmi-advice{margin-top:18px;color:var(--grey);font-size:14.5px;max-width:340px;}
+  .bmi-bar{width:100%;max-width:340px;height:8px;border-radius:8px;background:#222;margin-top:24px;overflow:hidden;position:relative;}
+  .bmi-bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#5fb0ff,#3ddc84,var(--gold),#ff6b6b);width:0%;transition:width 1s ease;}
+
+  /* ===== Success Stories ===== */
+  #success{background:var(--black-2);}
+  .stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .story-card{border-radius:16px;overflow:hidden;border:1px solid var(--glass-border);background:var(--glass);}
+  .ba-imgs{display:grid;grid-template-columns:1fr 1fr;}
+  .ba-imgs div{aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;font-size:13px;color:var(--grey);background:#141118;}
+  .ba-imgs div:first-child{border-left:1px solid var(--glass-border);}
+  .ba-imgs span{position:absolute;top:10px;right:10px;font-size:11px;background:rgba(0,0,0,.6);padding:4px 10px;border-radius:14px;color:var(--gold-light);}
+  .story-body{padding:22px;}
+  .story-body h4{font-size:16px;margin-bottom:6px;}
+  .story-body p{font-size:13.5px;color:var(--grey);}
+  .stars{color:var(--gold);margin-top:10px;font-size:14px;letter-spacing:2px;}
+
+  .testimonial-track{margin-top:60px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .t-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:28px;position:relative;}
+  .t-card::before{content:"“";position:absolute;top:10px;right:18px;font-size:50px;color:var(--gold);opacity:.3;font-family:Georgia,serif;}
+  .t-card p{font-size:14.5px;color:#cfcabf;margin-bottom:18px;}
+  .t-name{font-weight:700;font-size:14px;}
+  .t-role{font-size:12px;color:var(--grey);}
+
+  /* ===== Contact ===== */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+  .contact-info-card{
+    background:linear-gradient(160deg,var(--black-3),var(--black-2));border:1px solid var(--glass-border);
+    border-radius:18px;padding:38px;margin-bottom:22px;
+  }
+  .info-row{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid rgba(255,255,255,.05);}
+  .info-row:first-child{border-top:none;}
+  .info-row .ic{width:42px;height:42px;border-radius:10px;background:rgba(201,162,74,.12);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;}
+  .info-row strong{display:block;font-size:14.5px;}
+  .info-row span{font-size:13.5px;color:var(--grey);}
+  .map-box{height:220px;border-radius:14px;border:1px solid var(--glass-border);background:repeating-linear-gradient(45deg,#141118,#141118 10px,#19151c 10px,#19151c 20px);display:flex;align-items:center;justify-content:center;color:var(--grey);font-size:13.5px;}
+  .form-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:40px;}
+  .form-card textarea{resize:vertical;min-height:120px;}
+
+  footer{background:#040304;padding:60px 0 24px;border-top:1px solid var(--glass-border);}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+  .footer-logo{font-family:'Marcellus',serif;font-size:24px;color:var(--gold);margin-bottom:14px;}
+  footer p{color:var(--grey);font-size:14px;}
+  footer h5{font-size:14.5px;margin-bottom:18px;color:var(--white);}
+  footer ul li{margin-bottom:10px;}
+  footer ul li a{color:var(--grey);font-size:14px;transition:.3s;}
+  footer ul li a:hover{color:var(--gold);}
+  .footer-bottom{text-align:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);color:#6e6a63;font-size:13px;}
+  .social-row{display:flex;gap:12px;margin-top:18px;}
+  .social-row a{width:38px;height:38px;border-radius:50%;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:var(--gold);transition:.3s;}
+  .social-row a:hover{background:var(--gold);color:#000;}
+
+  /* WhatsApp floating */
+  .wa-float{
+    position:fixed;bottom:26px;left:26px;z-index:999;
+    width:62px;height:62px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 30px rgba(37,211,102,.45);animation:pulse 2.4s infinite;
+  }
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}70%{box-shadow:0 0 0 18px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}}
+
+  /* ===== responsive ===== */
+  @media(max-width:1080px){
+    .prog-grid{grid-template-columns:repeat(2,1fr);}
+    .store-grid{grid-template-columns:repeat(3,1fr);}
+    .about-grid, .bmi-wrap, .contact-grid{grid-template-columns:1fr;gap:40px;}
+    .stories-grid, .testimonial-track{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:760px){
+    .nav-links{position:fixed;inset:0 0 0 auto;width:78%;background:rgba(8,7,10,.98);flex-direction:column;justify-content:center;gap:30px;transform:translateX(100%);transition:.4s;border-left:1px solid var(--glass-border);}
+    [dir=rtl] .nav-links{right:auto;left:0;transform:translateX(-100%);}
+    .nav-links.open{transform:translateX(0);}
+    .burger{display:flex;}
+    .nav-cta{display:none;}
+    .prog-grid, .store-grid, .stories-grid, .testimonial-track{grid-template-columns:1fr;}
+    section{padding:80px 0;}
+    .stat-row{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-mark">A · E</div></div>
+
+<!-- ===== Header ===== -->
+<header id="header">
+  <div class="container">
+    <nav>
+      <a href="#home" class="logo">عبدالله عماد <span>COACH ABDULLAH EMAD</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">الرئيسية</a></li>
+        <li><a href="#about">عن الكابتن</a></li>
+        <li><a href="#programs">البرامج التدريبية</a></li>
+        <li><a href="#store">المتجر</a></li>
+        <li><a href="#bmi">حاسبة BMI</a></li>
+        <li><a href="#success">قصص النجاح</a></li>
+        <li><a href="#contact">تواصل معنا</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="lang-switch" id="langBtn">EN</button>
+        <a class="nav-cta" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">واتساب</a>
+        <div class="burger" id="burger"><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="home">
+  <video autoplay muted loop playsinline poster="">
+    <source src="https://cdn.coverr.co/videos/coverr-a-man-doing-dead-lifts-5316/1080p.mp4" type="video/mp4">
+  </video>
+  <div class="hero-content container">
+    <span class="hero-tag">PREMIUM FITNESS COACHING · مدرب لياقة بدنية معتمد</span>
+    <h1>الكابتن عبدالله عماد<small>انضباط · قوة · تحول حقيقي</small></h1>
+    <p class="lead">مدرب لياقة بدنية احترافي متخصص في برامج التخسيس، بناء العضلات، واللياقة العامة. أساعدك على بناء جسم أقوى وحياة أكثر انضباطاً بخطط مصممة خصيصاً لك.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">
+        تواصل عبر واتساب
+      </a>
+      <a class="btn btn-outline" href="#store">تصفح المتجر</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>اسحب للأسفل</span><div class="line"></div></div>
+</section>
+
+<!-- ===== About ===== -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal about-photo">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=900&auto=format&fit=crop" alt="الكابتن عبدالله عماد">
+        <div class="badge">
+          <div><strong>9+</strong><span>سنوات خبرة</span></div>
+          <div><strong>500+</strong><span>متدرب</span></div>
+          <div><strong>97%</strong><span>نتائج مثبتة</span></div>
+        </div>
+      </div>
+      <div class="reveal about-text">
+        <span class="eyebrow">عن الكابتن</span>
+        <h2>شغف حقيقي بتغيير حياة الناس عبر اللياقة البدنية</h2>
+        <p>أنا عبدالله عماد، مدرب لياقة بدنية معتمد دولياً بخبرة تتجاوز 9 سنوات في تدريب الأفراد على اختلاف أهدافهم؛ من خسارة الوزن إلى بناء العضلات والوصول لأعلى مستويات اللياقة. أؤمن أن كل جسم له بصمته الخاصة، لذلك أصمم كل برنامج تدريبي بناءً على أهداف وقدرات كل متدرب.</p>
+        <p>رحلتي بدأت من شغفي الشخصي بالرياضة، وتطورت لتصبح مهمة حياتي: مساعدة الآخرين على اكتشاف أفضل نسخة من أنفسهم، جسدياً وذهنياً.</p>
+        <div class="stat-row">
+          <div class="stat-card"><strong>+500</strong><span>متدرب ناجح</span></div>
+          <div class="stat-card"><strong>+9</strong><span>سنوات خبرة</span></div>
+          <div class="stat-card"><strong>+15</strong><span>شهادة احترافية</span></div>
+        </div>
+        <span class="eyebrow" style="margin-bottom:10px">الشهادات والاعتمادات</span>
+        <div class="cert-list">
+          <div class="cert-chip">ISSA مدرب شخصي معتمد</div>
+          <div class="cert-chip">شهادة تغذية رياضية</div>
+          <div class="cert-chip">ACE Personal Trainer</div>
+          <div class="cert-chip">إسعافات أولية CPR/AED</div>
+          <div class="cert-chip">برامج بناء القوة المتقدمة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Programs ===== -->
+<section id="programs">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">البرامج التدريبية</span>
+      <h2>برامج مصممة لتحقيق <span class="gold-grad">هدفك بدقة</span></h2>
+      <p>اختر البرنامج الأنسب لمرحلتك الحالية، أو احصل على خطة شخصية مصممة بالكامل وفق جسمك وجدولك.</p>
+    </div>
+    <div class="prog-grid">
+      <div class="prog-card reveal">
+        <span class="prog-num">01 — تخسيس</span>
+        <h3>برنامج خسارة الوزن</h3>
+        <p>خطة تغذية وتمرين متكاملة لحرق الدهون والحفاظ على الكتلة العضلية.</p>
+        <ul><li>خطة غذائية أسبوعية</li><li>تمارين كارديو وقوة</li><li>متابعة أسبوعية</li></ul>
+        <a class="prog-link" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">احجز الآن ←</a>
+      </div>
+      <div class="prog-card reveal">
+        <span class="prog-num">02 — بناء عضلات</span>
+        <h3>برنامج بناء العضلات</h3>
+        <p>برنامج تدريب مقاومة مكثف مع خطة تغذية لزيادة الكتلة العضلية النظيفة.</p>
+        <ul><li>تمارين تضخيم متقدمة</li><li>خطة بروتين وسعرات</li><li>تتبع القياسات الشهري</li></ul>
+        <a class="prog-link" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">احجز الآن ←</a>
+      </div>
+      <div class="prog-card reveal">
+        <span class="prog-num">03 — لياقة عامة</span>
+        <h3>برنامج اللياقة العامة</h3>
+        <p>تحسين القوة والمرونة والتحمل لأسلوب حياة صحي ونشيط.</p>
+        <ul><li>تمارين وظيفية متنوعة</li><li>تحسين المرونة والتوازن</li><li>جدول مرن حسب وقتك</li></ul>
+        <a class="prog-link" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">احجز الآن ←</a>
+      </div>
+      <div class="prog-card reveal">
+        <span class="prog-num">04 — خاص</span>
+        <h3>التدريب الشخصي الخاص</h3>
+        <p>متابعة مباشرة وخطة 100% مخصصة لك مع تواصل يومي مع الكابتن.</p>
+        <ul><li>متابعة يومية مباشرة</li><li>تعديل الخطة أسبوعياً</li><li>دعم نفسي وتحفيزي</li></ul>
+        <a class="prog-link" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">احجز الآن ←</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Store ===== -->
+<section id="store">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">المتجر</span>
+      <h2>مكملات غذائية <span class="gold-grad">ومعدات رياضية</span></h2>
+      <p>عرض المنتجات بدون دفع إلكتروني — للاستفسار والطلب تواصل معنا مباشرة عبر واتساب.</p>
+    </div>
+    <div class="filter-row reveal" id="filterRow">
+      <button class="filter-btn active" data-f="all">الكل</button>
+      <button class="filter-btn" data-f="protein">بروتين</button>
+      <button class="filter-btn" data-f="creatine">كرياتين</button>
+      <button class="filter-btn" data-f="vitamins">فيتامينات</button>
+      <button class="filter-btn" data-f="accessories">إكسسوارات الجيم</button>
+      <button class="filter-btn" data-f="bands">أحزمة المقاومة</button>
+      <button class="filter-btn" data-f="equipment">معدات تدريب</button>
+      <button class="filter-btn" data-f="essentials">مستلزمات الجيم</button>
+    </div>
+    <div class="store-grid" id="storeGrid"></div>
+  </div>
+</section>
+
+<!-- ===== BMI ===== -->
+<section id="bmi">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">حاسبة BMI</span>
+      <h2>احسب <span class="gold-grad">مؤشر كتلة جسمك</span> الآن</h2>
+      <p>أدخل بياناتك واحصل على نتيجة فورية مع توصيات مناسبة لحالتك.</p>
+    </div>
+    <div class="bmi-wrap">
+      <div class="bmi-card reveal">
+        <div class="field"><label>الطول (سم)</label><input type="number" id="height" placeholder="مثال: 175"></div>
+        <div class="field"><label>الوزن (كجم)</label><input type="number" id="weight" placeholder="مثال: 78"></div>
+        <div class="field"><label>العمر</label><input type="number" id="age" placeholder="مثال: 27"></div>
+        <div class="field"><label>الجنس</label>
+          <select id="gender"><option value="male">ذكر</option><option value="female">أنثى</option></select>
+        </div>
+        <button class="calc-btn" id="calcBtn">احسب الآن</button>
+      </div>
+      <div class="bmi-result reveal" id="bmiResult">
+        <div class="bmi-num" id="bmiNum">--</div>
+        <div class="bmi-cat" id="bmiCat">أدخل بياناتك للبدء</div>
+        <div class="bmi-bar"><div class="bmi-bar-fill" id="bmiBar"></div></div>
+        <div class="bmi-advice" id="bmiAdvice">ستظهر التوصيات المناسبة هنا بعد الحساب بناءً على نتيجتك.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Success Stories ===== -->
+<section id="success">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">قصص النجاح</span>
+      <h2>تحولات <span class="gold-grad">حقيقية وملموسة</span></h2>
+      <p>نتائج فعلية لمتدربين التزموا بالخطة وحققوا أهدافهم.</p>
+    </div>
+    <div class="stories-grid">
+      <div class="story-card reveal">
+        <div class="ba-imgs"><div>قبل<span>Before</span></div><div>بعد<span>After</span></div></div>
+        <div class="story-body"><h4>أحمد، 29 سنة</h4><p>خسارة 14 كجم خلال 4 أشهر مع تحسن واضح في اللياقة العامة.</p><div class="stars">★★★★★</div></div>
+      </div>
+      <div class="story-card reveal">
+        <div class="ba-imgs"><div>قبل<span>Before</span></div><div>بعد<span>After</span></div></div>
+        <div class="story-body"><h4>سارة، 24 سنة</h4><p>بناء عضلي ملحوظ وزيادة قوة بنسبة 40% خلال 6 أشهر.</p><div class="stars">★★★★★</div></div>
+      </div>
+      <div class="story-card reveal">
+        <div class="ba-imgs"><div>قبل<span>Before</span></div><div>بعد<span>After</span></div></div>
+        <div class="story-body"><h4>محمد، 35 سنة</h4><p>تحول كامل في نمط الحياة وخسارة 20 كجم بثبات وصحة.</p><div class="stars">★★★★★</div></div>
+      </div>
+    </div>
+
+    <div class="testimonial-track">
+      <div class="t-card reveal"><p>الكابتن عبدالله غيّر نظرتي بالكامل للتمرين والتغذية. متابعة حقيقية ونتائج واضحة من أول شهر.</p><div class="t-name">يوسف العبيدي</div><div class="t-role">متدرب — برنامج بناء العضلات</div></div>
+      <div class="t-card reveal"><p>أفضل تجربة تدريب شخصي خضت بها. الخطط منظمة جداً والدعم مستمر طوال الوقت.</p><div class="t-name">نور حسين</div><div class="t-role">متدربة — برنامج التخسيس</div></div>
+      <div class="t-card reveal"><p>احترافية عالية والتزام كامل من الكابتن بمتابعة كل تفصيلة بالبرنامج.</p><div class="t-name">علي كريم</div><div class="t-role">متدرب — اللياقة العامة</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">تواصل معنا</span>
+      <h2>ابدأ <span class="gold-grad">رحلتك اليوم</span></h2>
+      <p>راسلنا عبر النموذج أو تواصل مباشرة على واتساب لبدء برنامجك الخاص.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info-card">
+          <div class="info-row"><div class="ic">📍</div><div><strong>الموقع</strong><span>بغداد، العراق</span></div></div>
+          <div class="info-row"><div class="ic">📱</div><div><strong>واتساب</strong><span>009647708861419+</span></div></div>
+          <div class="info-row"><div class="ic">⏰</div><div><strong>أوقات الرد</strong><span>يومياً من 9 صباحاً حتى 10 مساءً</span></div></div>
+        </div>
+        <div class="map-box">خريطة الموقع — Google Maps Placeholder</div>
+      </div>
+      <form class="form-card reveal" id="contactForm">
+        <div class="field"><label>الاسم الكامل</label><input type="text" required placeholder="اكتب اسمك"></div>
+        <div class="field"><label>رقم الهاتف</label><input type="tel" required placeholder="07xxxxxxxxx"></div>
+        <div class="field"><label>الرسالة</label><textarea required placeholder="اكتب استفسارك هنا..."></textarea></div>
+        <button class="calc-btn" type="submit">إرسال عبر واتساب</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">عبدالله عماد</div>
+        <p>مدرب لياقة بدنية احترافي، أساعدك على بناء جسم أقوى وحياة أكثر انضباطاً عبر برامج تدريب وتغذية مصممة خصيصاً لك.</p>
+        <div class="social-row">
+          <a href="#" aria-label="instagram">IG</a>
+          <a href="#" aria-label="tiktok">TT</a>
+          <a href="https://wa.me/9647708861419" aria-label="whatsapp">WA</a>
+        </div>
+      </div>
+      <div>
+        <h5>روابط سريعة</h5>
+        <ul>
+          <li><a href="#about">عن الكابتن</a></li>
+          <li><a href="#programs">البرامج التدريبية</a></li>
+          <li><a href="#store">المتجر</a></li>
+          <li><a href="#bmi">حاسبة BMI</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>تواصل معنا</h5>
+        <ul>
+          <li><a href="#contact">نموذج التواصل</a></li>
+          <li><a href="https://wa.me/9647708861419">واتساب</a></li>
+          <li><a href="#">بغداد، العراق</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Coach Abdullah Emad — جميع الحقوق محفوظة</div>
+  </div>
+</footer>
+
+<a class="wa-float" target="_blank" href="https://wa.me/9647708861419?text=Hello%20Coach%20Abdullah%20Emad%2C%20I%20would%20like%20more%20information%20about%20your%20coaching%20services.">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.32 4.92L2 22l5.31-1.39a9.86 9.86 0 0 0 4.73 1.2h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.78 14.12c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.16-4.94-4.35-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.14.12.31.02.5-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.14.47.12.65-.07.18-.19.76-.88.96-1.18.2-.3.4-.25.66-.15.27.1 1.7.8 2 .94.3.14.5.21.57.33.07.12.07.69-.17 1.37z"/></svg>
+</a>
+
+<script>
+  // loader
+  window.addEventListener('load',()=>{
+    setTimeout(()=>document.getElementById('loader').classList.add('hide'),500);
+  });
+
+  // header scroll
+  const header=document.getElementById('header');
+  window.addEventListener('scroll',()=>{
+    header.classList.toggle('scrolled', window.scrollY>60);
+  });
+
+  // mobile menu
+  const burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks');
+  burger.addEventListener('click',()=>{navLinks.classList.toggle('open');});
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+
+  // reveal on scroll
+  const revealEls=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+  },{threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // active nav link on scroll
+  const sections=document.querySelectorAll('section[id]');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-140) cur=s.id; });
+    navLinks.querySelectorAll('a').forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href')==='#'+cur);
+    });
+  });
+
+  // ===== BMI Calculator =====
+  document.getElementById('calcBtn').addEventListener('click',()=>{
+    const h=parseFloat(document.getElementById('height').value)/100;
+    const w=parseFloat(document.getElementById('weight').value);
+    if(!h||!w){ document.getElementById('bmiCat').textContent='يرجى إدخال الطول والوزن'; return; }
+    const bmi=(w/(h*h));
+    document.getElementById('bmiNum').textContent=bmi.toFixed(1);
+    let cat='', advice='', pct=0, color='';
+    if(bmi<18.5){cat='نقص في الوزن';advice='يُنصح بزيادة السعرات الحرارية وبرنامج تدريب لبناء الكتلة العضلية. تواصل معنا لخطة مخصصة.';pct=15;}
+    else if(bmi<25){cat='وزن طبيعي';advice='وزنك ضمن المعدل الصحي! يمكننا مساعدتك على الحفاظ على لياقتك وتحسين شكل جسمك.';pct=45;}
+    else if(bmi<30){cat='زيادة في الوزن';advice='يُنصح ببرنامج تخسيس متكامل يجمع بين التغذية والتمرين لخسارة الوزن الزائد بأمان.';pct=70;}
+    else {cat='سمنة';advice='ننصح ببدء برنامج تخسيس مكثف تحت إشراف مباشر. تواصل معنا الآن لبدء خطتك.';pct=92;}
+    document.getElementById('bmiCat').textContent=cat;
+    document.getElementById('bmiAdvice').textContent=advice;
+    document.getElementById('bmiBar').style.width=pct+'%';
+  });
+
+  // ===== Store products =====
+  const products=[
+    {cat:'protein',icon:'🥤',name:'بروتين واي اولد ترينر',desc:'بروتين مصل اللبن عالي الجودة لدعم بناء العضلات.',price:'45,000 د.ع'},
+    {cat:'protein',icon:'🥛',name:'بروتين كازين ليلي',desc:'امتصاص بطيء مثالي قبل النوم.',price:'48,000 د.ع'},
+    {cat:'creatine',icon:'⚪',name:'كرياتين مونوهيدرات',desc:'لزيادة القوة والأداء أثناء التمرين.',price:'30,000 د.ع'},
+    {cat:'creatine',icon:'⚪',name:'كرياتين HCL', desc:'امتصاص أسرع بدون احتباس ماء.',price:'35,000 د.ع'},
+    {cat:'vitamins',icon:'💊',name:'فيتامين D3 + K2',desc:'دعم صحة العظام والمناعة.',price:'18,000 د.ع'},
+    {cat:'vitamins',icon:'💊',name:'أوميغا 3',desc:'دعم صحة القلب والمفاصل.',price:'20,000 د.ع'},
+    {cat:'vitamins',icon:'💊',name:'ملتي فيتامين رياضي',desc:'تركيبة متكاملة من الفيتامينات للرياضيين.',price:'22,000 د.ع'},
+    {cat:'accessories',icon:'🧤',name:'قفازات تدريب جلدية',desc:'حماية اليدين أثناء رفع الأثقال.',price:'15,000 د.ع'},
+    {cat:'accessories',icon:'🥋',name:'حزام رفع الأثقال',desc:'دعم أسفل الظهر أثناء التمارين الثقيلة.',price:'25,000 د.ع'},
+    {cat:'bands',icon:'🔵',name:'أحزمة مقاومة (سيت)',desc:'5 مستويات مقاومة لتمارين متنوعة.',price:'20,000 د.ع'},
+    {cat:'bands',icon:'🟣',name:'حزام مقاومة دائري',desc:'مثالي لتمارين الأرداف والسيقان.',price:'12,000 د.ع'},
+    {cat:'equipment',icon:'🏋️',name:'دمبل قابل للتعديل',desc:'وزن متغير من 5 إلى 25 كجم.',price:'120,000 د.ع'},
+    {cat:'equipment',icon:'🪢',name:'حبل تدريب Battle Rope',desc:'لتمارين القوة والكارديو المكثف.',price:'60,000 د.ع'},
+    {cat:'essentials',icon:'🧴',name:'شيكر بروتين',desc:'كوب خلط احترافي 600مل.',price:'8,000 د.ع'},
+    {cat:'essentials',icon:'🧻',name:'منشفة تمرين رياضية',desc:'سريعة الامتصاص ومضادة للبكتيريا.',price:'10,000 د.ع'},
+    {cat:'essentials',icon:'🎒',name:'حقيبة جيم رياضية',desc:'مساحة واسعة مع جيوب متعددة.',price:'35,000 د.ع'},
+  ];
+  const catLabel={protein:'بروتين',creatine:'كرياتين',vitamins:'فيتامينات',accessories:'إكسسوارات',bands:'أحزمة مقاومة',equipment:'معدات تدريب',essentials:'مستلزمات'};
+  const grid=document.getElementById('storeGrid');
+  function renderProducts(filter){
+    grid.innerHTML='';
+    products.filter(p=>filter==='all'||p.cat===filter).forEach(p=>{
+      const msg=encodeURIComponent(`Hello Coach Abdullah Emad, I would like more information about: ${p.name}`);
+      grid.insertAdjacentHTML('beforeend',`
+        <div class="product-card reveal show">
+          <div class="product-img"><span class="icon">${p.icon}</span><span class="product-cat">${catLabel[p.cat]}</span></div>
+          <div class="product-body">
+            <h4>${p.name}</h4>
+            <p>${p.desc}</p>
+            <div class="product-foot">
+              <span class="price">${p.price}</span>
+              <a class="wa-mini" target="_blank" href="https://wa.me/9647708861419?text=${msg}">استفسار</a>
+            </div>
+          </div>
+        </div>`);
+    });
+  }
+  renderProducts('all');
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(btn.dataset.f);
+    });
+  });
+
+  // contact form -> whatsapp
+  document.getElementById('contactForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    const inputs=this.querySelectorAll('input,textarea');
+    const name=inputs[0].value, phone=inputs[1].value, msg=inputs[2].value;
+    const text=encodeURIComponent(`Hello Coach Abdullah Emad, my name is ${name} (${phone}). ${msg}`);
+    window.open('https://wa.me/9647708861419?text='+text,'_blank');
+  });
+
+  // ===== EN/AR toggle (simple direction + key labels) =====
+  const enContent={
+    home:'Home',about:'About Coach',programs:'Programs',store:'Store',bmiNav:'BMI Calculator',success:'Success Stories',contact:'Contact'
+  };
+  let isEn=false;
+  document.getElementById('langBtn').addEventListener('click',()=>{
+    isEn=!isEn;
+    document.documentElement.lang= isEn ? 'en':'ar';
+    document.documentElement.dir = isEn ? 'ltr':'rtl';
+    document.getElementById('langBtn').textContent= isEn ? 'AR':'EN';
+    const navA=navLinks.querySelectorAll('a');
+    const keys=['home','about','programs','store','bmiNav','success','contact'];
+    const arLabels=['الرئيسية','عن الكابتن','البرامج التدريبية','المتجر','حاسبة BMI','قصص النجاح','تواصل معنا'];
+    navA.forEach((a,i)=>{ a.textContent = isEn ? enContent[keys[i]] : arLabels[i]; });
+  });
+</script>
+</body>
+</html>
