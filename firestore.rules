@@ -6,12 +6,27 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function allowedCoach() {
+      return signedIn()
+        && request.auth.uid == 'v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2'
+        && request.auth.token.email == 'alinajmiq1@gmail.com';
+    }
+
+    function dataCoachUid(uid) {
+      return uid in [
+        'v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2',
+        'eQpPtTto5IXmooFieqx97qkGFqg2',
+        'eQpPtTto5lXmooFieqx97qkGFqg2',
+        'fZAQnoyoDwNHyzIZDyObhkCr1pz1'
+      ];
+    }
+
     function ownsExisting() {
-      return signedIn() && resource.data.coachUid == request.auth.uid;
+      return allowedCoach() && dataCoachUid(resource.data.coachUid);
     }
 
     function ownsIncoming() {
-      return signedIn() && request.resource.data.coachUid == request.auth.uid;
+      return allowedCoach() && request.resource.data.coachUid == request.auth.uid;
     }
 
     match /trainees/{traineeId} {
@@ -19,17 +34,17 @@ service cloud.firestore {
       allow read, update, delete: if ownsExisting();
     }
 
-    match /publicPlans/{planId} {
-      allow read: if true;
-      allow create: if ownsIncoming();
-      allow update: if ownsExisting() || ownsIncoming();
-      allow delete: if ownsExisting();
+    match /exerciseLibraries/{coachId} {
+      allow read, delete: if allowedCoach() && dataCoachUid(coachId);
+      allow create, update: if allowedCoach()
+        && request.auth.uid == coachId
+        && request.resource.data.coachUid == request.auth.uid;
     }
 
-    match /publicAccess/{code} {
+    match /publicPlans/{planId} {
       allow read: if true;
-      allow create: if ownsIncoming();
-      allow update: if ownsExisting() || ownsIncoming();
+      allow create, update: if allowedCoach()
+        && request.resource.data.coachUid == request.auth.uid;
       allow delete: if ownsExisting();
     }
 

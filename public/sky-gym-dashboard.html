@@ -5,33 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coach Abdullah Emad — نظام المدرب</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, setDoc, query, where }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-  // 🔥 ضع إعدادات Firebase هنا
-  const firebaseConfig = {
-    apiKey:            "AIzaSyBvQN6b5WGuDEayMYH3NQkBdW2qRor_UGg",
-    authDomain:        "truck-f4c15.firebaseapp.com",
-    projectId:         "truck-f4c15",
-    storageBucket:     "truck-f4c15.firebasestorage.app",
-    messagingSenderId: "709260876125",
-    appId:             "1:709260876125:web:71a9abc54267ad3f27b0b4"
-  };
-  try {
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-    const auth = getAuth(app);
-    window.$db=db; window.$col=collection; window.$add=addDoc;
-    window.$get=getDocs; window.$getDoc=getDoc; window.$doc=doc; window.$del=deleteDoc; window.$upd=updateDoc; window.$set=setDoc; window.$query=query; window.$where=where;
-    window.$auth=auth; window.$authState=onAuthStateChanged; window.$signIn=signInWithEmailAndPassword; window.$signOut=signOut;
-    window.$fb=true;
-  } catch(e){ window.$fb=false; }
-  window.dispatchEvent(new Event('fbReady'));
-</script>
 <style>
 :root{
   --gold:#C8A84B;--gl:#E8C76A;--gd:#8a6a20;
@@ -49,6 +22,8 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .bo{background:transparent;border:1px solid var(--gold);color:var(--gold);}.bo:hover{background:var(--gold);color:var(--dark);}
 .br{background:var(--red);color:#fff;}.br:hover{background:#c0392b;}
 .bb{background:var(--blue);color:#fff;}.bb:hover{background:#1a5a8a;}
+.bf{background:#2471a3;color:#fff;border:1px solid #2471a3;}.bf:hover{background:#1a5a8a;border-color:#1a5a8a;color:#fff;}
+.bgreen{background:var(--green);color:#fff;border:1px solid var(--green);}.bgreen:hover{background:#1f8f4f;border-color:#1f8f4f;color:#fff;}
 .sm{font-size:11px;padding:7px 13px;}
 
 /* ── LOGIN ── */
@@ -97,16 +72,15 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .av{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--dark);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;}
 .tn{font-size:14px;font-weight:700;}.tm{font-size:11px;color:var(--dim);margin-top:1px;}
 .tcb{padding:12px 16px;}
-.tss{display:flex;gap:7px;margin-bottom:12px;}
-.tst{flex:1;background:#111;border-radius:3px;padding:7px 3px;text-align:center;}
-.tst .tv{font-size:14px;font-weight:900;color:var(--gold);display:block;}
-.tst .tl{font-size:10px;color:var(--dim);}
-.tacts{display:flex;gap:6px;}
+.tss{display:flex;gap:5px;margin-bottom:10px;}
+.tst{flex:1;background:#111;border-radius:3px;padding:5px 3px;text-align:center;}
+.tst .tv{font-size:13px;font-weight:900;color:var(--gold);display:block;}
+.tst .tl{font-size:9px;color:var(--dim);}
+.tacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+.tacts .btn{width:100%;min-width:0;white-space:normal;line-height:1.55;}
 .subline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:8px 10px;background:#101010;border:1px solid #202020;border-radius:3px;font-size:11px;color:var(--dim);}
-.codeline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;padding:8px 10px;background:#0d0d0d;border:1px dashed #2a2a2a;border-radius:3px;font-size:11px;color:var(--dim);}
-.codeval{color:var(--gold);font-weight:900;letter-spacing:1px;direction:ltr;}
 .subpill{font-size:10px;font-weight:900;padding:3px 8px;border-radius:20px;color:#fff;white-space:nowrap;}
-.subpill.ok{background:var(--green);}.subpill.soon{background:#b8860b;}.subpill.expired{background:var(--red);}.subpill.none{background:#444;}
+.subpill.ok{background:var(--green);}.subpill.soon{background:#b8860b;}.subpill.expired{background:var(--red);}.subpill.frozen{background:#2471a3;}.subpill.none{background:#444;}
 .empty{text-align:center;padding:55px 20px;color:var(--dim);}
 .empty .ei{font-size:42px;display:block;margin-bottom:10px;}
 .ld{text-align:center;padding:45px;color:var(--dim);}
@@ -166,6 +140,28 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .wuin::placeholder{color:var(--dim2);}
 .ffoot{display:flex;gap:9px;margin-top:18px;justify-content:flex-end;}
 
+/* ── S4 EXERCISE LIBRARY ── */
+#s4{max-width:960px;margin:0 auto;padding:26px 18px;}
+.libtop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.libtop h2{font-size:19px;font-weight:900;color:var(--gold);}
+.libhint{font-size:11px;color:var(--dim);margin-top:3px;}
+.libform{background:var(--d3);border:1px solid #222;border-radius:4px;margin-bottom:16px;padding:15px;}
+.libform .fr{margin-bottom:0;}
+.liblist{display:grid;gap:12px;}
+.libcat{background:var(--d3);border:1px solid #232323;border-radius:4px;overflow:hidden;}
+.libcathead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;background:linear-gradient(135deg,#1d1d1d,#121212);border-bottom:1px solid #1e1e1e;}
+.libcatname{font-size:14px;font-weight:900;color:var(--gold);}
+.libcount{font-size:10px;color:#111;background:var(--gold);border-radius:20px;padding:3px 8px;font-weight:900;white-space:nowrap;}
+.libitems{display:flex;flex-wrap:wrap;gap:8px;padding:13px 15px;}
+.libitem{display:flex;align-items:center;gap:7px;background:#101010;border:1px solid #252525;border-radius:4px;padding:7px 9px;font-size:12px;color:#ddd;}
+.libitem.base{color:#9a9a9a;border-style:dashed;}
+.libvideo{color:var(--gold);font-size:10px;text-decoration:none;border:1px solid #3a3218;border-radius:3px;padding:2px 6px;background:#141006;}
+.libvideo:hover{background:var(--gold);color:var(--dark);}
+.libedit{width:23px;height:21px;border-radius:3px;border:1px solid #3a3218;background:#141006;color:var(--gold);cursor:pointer;font-size:11px;line-height:1;}
+.libedit:hover{background:var(--gold);color:var(--dark);}
+.libdel{width:21px;height:21px;border-radius:3px;border:1px solid #4a1010;background:#1a0808;color:var(--red);cursor:pointer;font-size:12px;line-height:1;}
+.libdel:hover{background:var(--red);color:#fff;}
+
 /* ── S3 PLAN ── */
 #s3{background:var(--dark);}
 .pb{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;background:var(--d3);border-bottom:1px solid #1e1e1e;flex-wrap:wrap;gap:9px;position:sticky;top:0;z-index:100;}
@@ -182,12 +178,17 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .sb:last-child{border-left:none;}
 .sb .sv{font-size:20px;font-weight:900;color:var(--gold);display:block;}
 .sb .sl{font-size:10px;color:#858585;}
-.certsec{max-width:940px;margin:24px auto 0;padding:0 18px;position:relative;}
-.certhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px;}
-.certtitle{font-size:18px;font-weight:900;color:var(--gold);}
-.certsub{font-size:11px;color:#777;margin-top:3px;}
-.certcount{font-size:11px;color:#111;background:var(--gold);padding:5px 10px;border-radius:20px;font-weight:900;white-space:nowrap;}
-.certgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.plancta{margin:14px auto 0;position:relative;display:flex;justify-content:center;}
+.plancta a{display:inline-flex;align-items:center;justify-content:center;gap:6px;max-width:100%;min-height:34px;padding:7px 13px;background:rgba(10,10,10,.72);color:#d8c275;border:1px solid rgba(200,168,75,.34);border-radius:4px;text-decoration:none;font-size:12px;font-weight:800;line-height:1.6;transition:border-color .2s,color .2s,background .2s;}
+.plancta a:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.7);color:var(--gl);}
+.plancta a.cta0{background:rgba(200,168,75,.14);border-color:rgba(200,168,75,.62);color:var(--gl);}
+.plancta a.cta1{background:rgba(36,113,163,.18);border-color:rgba(52,152,219,.62);color:#8fd0ff;}
+.plancta a.cta2{background:rgba(39,174,96,.16);border-color:rgba(46,204,113,.62);color:#8ff0b2;}
+.plancta a.cta3{background:rgba(231,76,60,.14);border-color:rgba(231,76,60,.58);color:#ff9a8f;}
+.certsec{max-width:620px;margin:16px auto 0;padding:0 18px;position:relative;text-align:center;}
+.certopen{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 12px;background:rgba(17,17,17,.74);border:1px solid rgba(200,168,75,.34);border-radius:4px;color:#d8c275;font-family:'Cairo',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.certopen:hover{background:rgba(200,168,75,.1);border-color:rgba(200,168,75,.7);color:var(--gl);}
+.certgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px;}
 .certcard{background:linear-gradient(180deg,#1b1b1b,#131313);border:1px solid #272727;border-radius:7px;overflow:hidden;text-align:right;cursor:pointer;font-family:'Cairo',sans-serif;color:var(--txt);padding:0;transition:border-color .2s,transform .2s;}
 .certcard:hover{border-color:rgba(200,168,75,.6);transform:translateY(-1px);}
 .certthumb{height:105px;background:#0c0c0c;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #222;}
@@ -206,6 +207,16 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .wtab .wr{display:block;font-size:10px;margin-top:5px;color:#39FF14;opacity:.95;line-height:1.5;}
 .wtab.on .wr{color:var(--dark);}
 .wcont{display:none;}.wcont.on{display:block;}
+.dietgrid{max-width:940px;margin:18px auto 52px;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px;}
+.macrogrid{max-width:940px;margin:18px auto 0;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;}
+.macrocard{background:#101010;border:1px solid #242424;border-radius:6px;padding:12px 14px;text-align:center;}
+.macrocard .mv{font-size:20px;font-weight:900;color:var(--gold);display:block;line-height:1.3;}
+.macrocard .ml{font-size:10px;color:#777;margin-top:3px;}
+.mealcard{background:linear-gradient(180deg,#1b1b1b,#141414);border:1px solid #242424;border-radius:7px;overflow:hidden;}
+.mealhead{padding:13px 16px;background:linear-gradient(135deg,#222,#151515);border-bottom:1px solid #1a1a1a;font-size:15px;font-weight:900;color:var(--gold);}
+.mealbody{padding:13px 16px;color:#bbb;font-size:13px;line-height:1.9;white-space:pre-line;}
+.dietnote{max-width:940px;margin:18px auto 0;padding:0 18px;}
+.dietnote .pni{border-right-color:#39FF14;}
 .dgrid{max-width:940px;margin:18px auto 52px;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:13px;}
 .dc{background:linear-gradient(180deg,#1b1b1b,#141414);border:1px solid #242424;border-radius:7px;overflow:hidden;transition:border-color .2s,transform .2s;}
 .dc:hover{border-color:rgba(200,168,75,.35);}
@@ -226,37 +237,40 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 .exi:last-child{border-bottom:none;}
 .exn{width:24px;height:24px;background:var(--gold);color:var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;margin-top:1px;}
 .exii{flex:1;}
-.exnm{font-size:14px;font-weight:700;color:var(--txt);line-height:1.55;}
+.exnm{font-size:14px;font-weight:700;color:var(--txt);line-height:1.55;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.exhelp{font-size:10px;color:var(--dark);background:var(--gold);border-radius:3px;padding:2px 7px;text-decoration:none;font-weight:900;line-height:1.6;}
+.exhelp:hover{background:var(--gl);}
 .exs{font-size:12px;color:var(--gold);margin-top:2px;font-weight:700;}
 .wbg{background:#101010;border:1px solid #333;border-radius:4px;padding:5px 9px;font-size:11px;color:var(--gl);white-space:nowrap;font-weight:800;}
 .plfoot{text-align:center;padding:20px;color:#2a2a2a;font-size:12px;border-top:1px solid #181818;}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:9998;}
 .modal.on{display:flex;}
-.mbox{width:100%;max-width:360px;background:var(--d3);border:1px solid #2a2a2a;border-radius:5px;padding:20px;text-align:center;}
-.mbox h3{font-size:17px;color:var(--gold);margin-bottom:12px;}
 .certbox{width:100%;max-width:960px;max-height:92vh;background:var(--d3);border:1px solid #2a2a2a;border-radius:7px;padding:14px;text-align:center;overflow:auto;}
 .certbox h3{font-size:17px;color:var(--gold);margin-bottom:10px;}
 .certfull{width:100%;max-height:76vh;object-fit:contain;background:#090909;border-radius:5px;display:block;margin:0 auto 12px;}
-.qrimg{width:300px;height:300px;background:#fff;border-radius:4px;padding:12px;margin:0 auto 12px;display:block;image-rendering:pixelated;}
-.qlink{font-size:11px;color:var(--dim);background:#111;border:1px solid #252525;border-radius:3px;padding:9px;word-break:break-all;direction:ltr;text-align:left;margin-bottom:12px;}
-.macts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.qrbox{width:100%;max-width:390px;background:var(--d3);border:1px solid #2a2a2a;border-radius:7px;padding:17px;text-align:center;}
+.qrbox h3{font-size:16px;color:var(--gold);margin-bottom:12px;}
+.qrimg{width:220px;height:220px;background:#fff;border:8px solid #fff;border-radius:4px;display:block;margin:0 auto 12px;}
+.qrlink{width:100%;padding:10px 12px;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:4px;color:var(--txt);font-family:'Cairo',sans-serif;font-size:12px;text-align:left;direction:ltr;margin-bottom:11px;}
+.qractions{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;}
+.qractions a{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
 @media(max-width:760px){.wnav{display:flex;overflow-x:auto;padding:18px 14px 0;scroll-snap-type:x mandatory;}.wtab{flex:0 0 145px;scroll-snap-align:start;}.sbar{grid-template-columns:repeat(2,1fr);max-width:420px;}.sb:nth-child(2){border-left:none}.sb:nth-child(1),.sb:nth-child(2){border-bottom:1px solid #2a2a2a;}.plh{padding:42px 16px 26px;}.plsub{font-size:12px;}.pb{align-items:flex-start}.pbacts{width:100%;overflow-x:auto}.pbacts .btn{white-space:nowrap;}.certhead{align-items:flex-start;flex-direction:column}.certgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:3px}.certcard{flex:0 0 210px;scroll-snap-align:start}.certthumb{height:126px;}.certbox{padding:10px}.certfull{max-height:70vh;}}
 @media(max-width:600px){.tgrid,.dgrid{grid-template-columns:1fr;}.fr{grid-template-columns:1fr;}.fr.r3,.fr.r4{grid-template-columns:1fr 1fr;}.dstats{flex-wrap:wrap;}.xweeks{grid-template-columns:1fr 1fr;}.dgrid{padding:0 12px;margin-top:14px;}.exi{grid-template-columns:24px minmax(0,1fr);}.wbg{grid-column:2;justify-self:start;margin-top:2px;}.plname{font-size:36px;}}
-@media(max-width:600px){.tacts{flex-wrap:wrap}.tacts .btn{flex:1 1 30%;}.xhead{grid-template-columns:1fr 64px 30px;}}
+@media(max-width:600px){.xhead{grid-template-columns:1fr 64px 30px;}}
 @media(max-width:430px){#auth{padding:14px}.authbox{border-radius:6px}.authhead{padding:25px 18px 18px}.authlogo{font-size:26px}.authbody{padding:18px}.authbody .fl input{height:43px}}
 </style>
 </head>
 <body>
 <div id="toast"></div>
 <div class="modal" id="qrModal" onclick="closeQr(event)">
-  <div class="mbox" onclick="event.stopPropagation()">
-    <h3 id="qrTitle">QR المتدرب</h3>
+  <div class="qrbox" onclick="event.stopPropagation()">
+    <h3>رابط البرنامج للمتدرب</h3>
     <img class="qrimg" id="qrImg" alt="QR Code">
-    <div class="qlink" id="qrLink">—</div>
-    <div class="macts">
-      <button class="btn bg" onclick="copyPlanLink()">نسخ الرابط</button>
-      <button class="btn bo" onclick="downloadQr()">تحميل QR</button>
-      <button class="btn br" style="grid-column:1/-1" onclick="closeQr()">إغلاق</button>
+    <input class="qrlink" id="qrLink" readonly>
+    <div class="qractions">
+      <button class="btn bg" onclick="copyQrLink()">نسخ الرابط</button>
+      <a class="btn bo" id="qrOpen" href="#" target="_blank" rel="noopener">فتح الرابط</a>
+      <button class="btn br" onclick="closeQr()">إغلاق</button>
     </div>
   </div>
 </div>
@@ -276,14 +290,14 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
     </div>
     <div class="authbody">
       <div class="authpanel on" id="coachLoginPanel">
-        <div class="fl"><label>الإيميل أو رقم الهاتف</label><input id="lemail" type="text"></div>
-        <div class="fl"><label>كلمة السر أو الكود</label><input id="lpass" type="password"></div>
+        <div class="fl"><label>الإيميل</label><input id="lemail" type="text"></div>
+        <div class="fl"><label>كلمة السر</label><input id="lpass" type="password"></div>
         <div class="authactions">
           <button class="btn bg" onclick="unifiedLogin()">دخول</button>
         </div>
       </div>
       <div class="authsocial" aria-label="حسابات التواصل الاجتماعي">
-        <a href="https://www.instagram.com/abdemad1986?igsh=MWE0dXhqbDE2ZWs1ZQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <a href="https://www.instagram.com/abdemad1986" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Zm5-2.6a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
         </a>
         <a href="https://www.tiktok.com/@abode_629" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
@@ -305,6 +319,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
     <div class="dhacts">
       <div class="coach" id="coachEmail">—</div>
       <div class="demoMark" id="demoMark">وضع تجريبي محلي</div>
+      <button class="btn bo" onclick="openExerciseLibrary()">مكتبة التمارين</button>
       <button class="btn bg" onclick="openForm()">+ متدرب جديد</button>
       <button class="btn bo" onclick="logoutCoach()">خروج</button>
     </div>
@@ -330,9 +345,10 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
   <div class="fsec">
     <div class="fsh">👤 بيانات المتدرب</div>
     <div class="fsb">
-      <div class="fr">
+      <div class="fr r3">
         <div class="fl"><label>الاسم *</label><input id="fn" type="text" placeholder="اسم المتدرب"></div>
         <div class="fl"><label>الهاتف</label><input id="fph" type="text" placeholder="+964 7XX XXX XXXX"></div>
+        <div class="fl"><label>طبيعة العمل</label><input id="fwork" type="text" placeholder="مثال: مكتبي، ميداني، طالب"></div>
       </div>
       <div class="fr r4">
         <div class="fl"><label>الطول (سم)</label><input id="fht" type="number" placeholder="185" oninput="calcBMI()"></div>
@@ -372,6 +388,40 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
     </div>
   </div>
   <div class="fsec">
+    <div class="fsh">🥗 النظام الغذائي المرتبط بالمتدرب</div>
+    <div class="fsb">
+      <div class="fr">
+        <div class="fl"><label>نوع النظام</label>
+          <select id="fdtype"><option>انقاص وزن</option><option>زيادة وزن</option><option>تنشيف عضل صافي</option><option>ضخامة عضلية</option><option>محافظة على الوزن</option></select>
+        </div>
+        <div class="fl"><label>السعرات</label><input id="fdcal" type="number" placeholder="مثال: 2400"></div>
+      </div>
+      <div class="fr r3">
+        <div class="fl"><label>البروتين (غ)</label><input id="fdprotein" type="number" placeholder="مثال: 160"></div>
+        <div class="fl"><label>الكارب (غ)</label><input id="fdcarbs" type="number" placeholder="مثال: 250"></div>
+        <div class="fl"><label>الدهون (غ)</label><input id="fdfat" type="number" placeholder="مثال: 70"></div>
+      </div>
+      <div class="fr">
+        <div class="fl"><label>الوجبة 1</label><textarea id="fdmeal1" placeholder="مثال: 4 بيض، شوفان، فاكهة"></textarea></div>
+        <div class="fl"><label>الوجبة 2</label><textarea id="fdmeal2" placeholder="مثال: رز، صدر دجاج، سلطة"></textarea></div>
+      </div>
+      <div class="fr">
+        <div class="fl"><label>الوجبة 3</label><textarea id="fdmeal3" placeholder="مثال: تونة أو لحم قليل الدهن، خضار"></textarea></div>
+        <div class="fl"><label>الوجبة 4</label><textarea id="fdmeal4" placeholder="مثال: موز، واي بروتين، مكسرات"></textarea></div>
+      </div>
+      <div class="fr">
+        <div class="fl"><label>الوجبة 5</label><textarea id="fdmeal5" placeholder="مثال: بطاطا، لحم، خضار"></textarea></div>
+        <div class="fl"><label>الوجبة 6</label><textarea id="fdmeal6" placeholder="مثال: لبن يوناني، مكسرات، فاكهة"></textarea></div>
+      </div>
+      <div class="fr r1">
+        <div class="fl"><label>سناك</label><textarea id="fdsnack" placeholder="مثال: موز، واي بروتين، مكسرات، لبن"></textarea></div>
+      </div>
+      <div class="fr r1">
+        <div class="fl"><label>ملاحظات غذائية</label><textarea id="fdnotes" placeholder="حساسية، أطعمة ممنوعة، كمية ماء، يوم مفتوح..."></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="fsec">
     <div class="fsh">📅 البرنامج الأسبوعي — أوزان مختلفة لكل أسبوع من 6 أسابيع</div>
     <div class="fsb" id="dWrap"></div>
   </div>
@@ -387,16 +437,43 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
     <div class="pn" id="pbn">—</div>
     <div class="pbacts">
       <button class="btn bo sm" onclick="goS1()">→ القائمة</button>
-      <button class="btn bb sm" onclick="openQr(curPlan?.id)">QR</button>
       <button class="btn bg sm" onclick="dlPlan()">⬇ تحميل الملف</button>
     </div>
   </div>
   <div id="planBody"></div>
 </div>
 
+<!-- S4 -->
+<div class="sc" id="s4">
+  <div class="libtop">
+    <div>
+      <button class="bk" onclick="goS1()">→ رجوع</button>
+      <h2>مكتبة التمارين</h2>
+      <div class="libhint">أضف تمارينك الخاصة، وستظهر مباشرة داخل قوائم البرنامج الأسبوعي.</div>
+    </div>
+  </div>
+  <div class="libform">
+    <div class="fr r4">
+      <div class="fl"><label>القسم / العضلة</label><input id="libCat" list="libCatList" type="text" placeholder="مثال: صدر، ظهر، أرجل"><datalist id="libCatList"></datalist></div>
+      <div class="fl"><label>اسم التمرين</label><input id="libExercise" type="text" placeholder="مثال: بنج دمبلز مائل"></div>
+      <div class="fl"><label>رابط شرح التمرين</label><input id="libVideo" type="url" placeholder="اختياري: YouTube / Instagram"></div>
+      <div class="fl"><label>&nbsp;</label><button class="btn bg" style="width:100%;height:39px" onclick="addLibraryExercise()">+ إضافة للمكتبة</button></div>
+    </div>
+  </div>
+  <div id="libList" class="liblist"></div>
+</div>
+
 <script>
 /* DATA */
 const DAYS=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+const DESIGNER_WHATSAPP='https://wa.me/9647742244799?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%86%D8%B8%D8%A7%D9%85%D9%8B%D8%A7%20%D9%85%D8%AB%D9%84%20%D9%87%D8%B0%D8%A7%20%D9%85%D9%86%20%D8%B4%D8%B1%D9%83%D8%A9%20A.N';
+const CTA_TEXTS=[
+  'اضغط هنا واطلب مشروعك الخاص من A.N',
+  'حوّل فكرتك إلى مشروع رقمي مع A.N',
+  'اطلب موقعك أو نظامك الخاص من A.N',
+  'A.N تصمّم لك مشروعاً يناسب شغلك'
+];
+let ctaTimer=null;
 const WKS=[
   {lbl:'الأسبوع الأول', reps:'4 × 20',icon:'🟢',int:'أوزان خفيفة'},
   {lbl:'الأسبوع الثاني',reps:'3 × 15',icon:'🟡',int:'أوزان متوسطة'},
@@ -420,7 +497,7 @@ const DEFAULT_DAY_NOTES=[
   'ملاحظة: تمطية للعضلات المستهدفة\nكارديو نط الحبل 5 جولات، كل جولة لمدة دقيقة\nتمارين بطن',
   'ملاحظة: تمطية العضلات المستهدفة',
   'تمارين بطن\nكارديو جبلي 30 دق',
-  '',
+  'تمطية العضلات المستهدفة بعد الانتهاء من التمرين',
   ''
 ];
 const LIB={
@@ -433,6 +510,7 @@ const LIB={
   'بطن':['طحن معدة جهاز','مصطبة مائلة','كرنش','رفع رجلين نائم','باك ارج'],
   'كارديو':['جهاز جري 30 دقيقة','جهاز درج 30 دقيقة','جهاز أوبتكل 30 دقيقة','دراجة جالس 30 دقيقة','جهاز درج 15 دقيقة'],
 };
+let customLib={};
 const CERT_BASE='https://truck-f4c15.web.app/certificates/';
 const CERTS=[
   ['مدرب لياقة شخصية','IFPA','personal-fitness-trainer.jpeg'],
@@ -446,48 +524,40 @@ const CERTS=[
 
 let trainees=[],editId=null,curPlan=null,demoMode=false;
 const DEMO_KEY='skyGymDemoTrainees';
+const DEMO_LIB_KEY='skyGymDemoExerciseLibrary';
+const PUBLIC_PLAN_PARAM='plan';
+const ALLOWED_COACH_EMAIL='alinajmiq1@gmail.com';
+const ALLOWED_COACH_UID='v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2';
+const ALLOWED_COACH_UIDS=[ALLOWED_COACH_UID];
+const DATA_COACH_UIDS=[
+  ALLOWED_COACH_UID,
+  'eQpPtTto5IXmooFieqx97qkGFqg2',
+  'eQpPtTto5lXmooFieqx97qkGFqg2',
+  'fZAQnoyoDwNHyzIZDyObhkCr1pz1'
+];
 
 /* AUTH */
 function authVals(){return{email:document.getElementById('lemail').value.trim(),pass:document.getElementById('lpass').value};}
 async function loginCoach(){
   if(!window.$fb||!window.$auth){toast('Firebase غير متصل');return;}
   const v=authVals();if(!v.email||!v.pass){toast('أدخل الإيميل وكلمة السر');return;}
+  if(v.email.toLowerCase()!==ALLOWED_COACH_EMAIL){toast('هذا الحساب غير مخوّل للدخول');return;}
   try{await window.$signIn(window.$auth,v.email,v.pass);}catch(e){toast('فشل الدخول: '+authMsg(e));}
-}
-function normalizePhone(v){return String(v||'').replace(/\D/g,'');}
-function makeAccessCode(){
-  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const bytes=new Uint8Array(12);
-  crypto.getRandomValues(bytes);
-  let out='';
-  for(let i=0;i<bytes.length;i++)out+=chars[bytes[i]%chars.length];
-  return out;
-}
-async function loginTrainee(){
-  const v=authVals(),phone=normalizePhone(v.email),code=v.pass.trim().toUpperCase();
-  if(!phone||!code){toast('أدخل الهاتف والكود');return;}
-  try{
-    const snap=await window.$getDoc(window.$doc(window.$db,'publicAccess',code));
-    if(!snap.exists()){toast('الكود غير صحيح');return;}
-    const data=snap.data();
-    if(normalizePhone(data.phone)!==phone){toast('رقم الهاتف لا يطابق الكود');return;}
-    await openPublicPlan(data.planId);
-  }catch(e){toast('تعذر فتح البرنامج');}
 }
 async function unifiedLogin(){
   const v=authVals();
-  if(!v.email||!v.pass){toast('أدخل بيانات الدخول');return;}
-  if(v.email.includes('@'))await loginCoach();
-  else await loginTrainee();
+  if(!v.email||!v.pass){toast('أدخل الإيميل وكلمة السر');return;}
+  await loginCoach();
 }
 function demoLogin(){
   demoMode=true;
   document.getElementById('coachEmail').textContent='demo@skygym.local';
   document.getElementById('demoMark').classList.add('on');
+  loadExerciseLibrary();
   show('s1');loadTrainees();toast('وضع تجريبي — لا يؤثر على Firebase');
 }
 async function logoutCoach(){
-  if(demoMode){demoMode=false;trainees=[];document.getElementById('demoMark').classList.remove('on');showAuth();toast('تم الخروج من الوضع التجريبي');return;}
+  if(demoMode){demoMode=false;trainees=[];customLib={};document.getElementById('demoMark').classList.remove('on');showAuth();toast('تم الخروج من الوضع التجريبي');return;}
   if(window.$auth)await window.$signOut(window.$auth);
 }
 function authMsg(e){
@@ -498,10 +568,15 @@ function authMsg(e){
   if(c.includes('network'))return'مشكلة اتصال';
   return e?.message||'خطأ غير معروف';
 }
+function isAllowedCoach(user){
+  return String(user?.email||'').toLowerCase()===ALLOWED_COACH_EMAIL && ALLOWED_COACH_UIDS.includes(user?.uid);
+}
 
 /* FIREBASE */
 function demoRead(){try{return JSON.parse(localStorage.getItem(DEMO_KEY)||'[]');}catch(e){return[];}}
 function demoWrite(list){localStorage.setItem(DEMO_KEY,JSON.stringify(list));}
+function demoLibRead(){try{return JSON.parse(localStorage.getItem(DEMO_LIB_KEY)||'{}');}catch(e){return{};}}
+function demoLibWrite(lib){localStorage.setItem(DEMO_LIB_KEY,JSON.stringify(lib));}
 async function fbA(d){
   if(demoMode){const list=demoRead(),id='demo-'+Date.now();list.push({id,...d});demoWrite(list);return id;}
   try{return(await window.$add(window.$col(window.$db,'trainees'),d)).id;}catch(e){toast('خطأ: '+e.message);return null;}
@@ -510,8 +585,13 @@ async function fbG(){
   if(demoMode)return demoRead();
   try{
     const uid=window.$auth?.currentUser?.uid||'';
-    const q=window.$query(window.$col(window.$db,'trainees'),window.$where('coachUid','==',uid));
-    return(await window.$get(q)).docs.map(x=>({id:x.id,...x.data()}));
+    const ids=ALLOWED_COACH_UIDS.includes(uid)?DATA_COACH_UIDS:[uid];
+    const byId=new Map();
+    for(const coachUid of ids){
+      const q=window.$query(window.$col(window.$db,'trainees'),window.$where('coachUid','==',coachUid));
+      (await window.$get(q)).docs.forEach(x=>byId.set(x.id,{id:x.id,...x.data()}));
+    }
+    return [...byId.values()];
   }catch(e){toast('تعذر تحميل المتدربين');return[];}
 }
 async function fbD(id){
@@ -522,36 +602,101 @@ async function fbU(id,d){
   if(demoMode){demoWrite(demoRead().map(t=>t.id===id?{id,...t,...d}:t));return;}
   try{await window.$upd(window.$doc(window.$db,'trainees',id),d);}catch(e){toast('خطأ تحديث');}
 }
-function publicPlanData(t){
-  return {
-    name:t.name||'',height:t.height||0,weight:t.weight||0,age:t.age||0,
-    goal:t.goal||'',level:t.level||'',notes:t.notes||'',days:t.days||[],
-    coachUid:t.coachUid||window.$auth?.currentUser?.uid||'',updatedAt:new Date().toISOString()
-  };
-}
-async function fbPublishPlan(t){
-  if(demoMode)return true;
-  if(!t?.id)return false;
-  if(!t.accessCode)t.accessCode=makeAccessCode(t.id);
-  try{
-    await window.$set(window.$doc(window.$db,'publicPlans',t.id),publicPlanData(t));
-    await window.$set(window.$doc(window.$db,'publicAccess',t.accessCode),{
-      planId:t.id,
-      phone:normalizePhone(t.phone),
-      coachUid:t.coachUid||window.$auth?.currentUser?.uid||'',
-      updatedAt:new Date().toISOString()
+function cleanLib(lib){
+  const out={};
+  Object.entries(lib||{}).forEach(([cat,items])=>{
+    const c=String(cat||'').trim();
+    if(!c||!Array.isArray(items))return;
+    const seen=new Set();
+    const clean=[];
+    items.forEach(item=>{
+      const obj=typeof item==='string'?{name:item}:item||{};
+      const name=String(obj.name||'').trim();
+      if(!name||seen.has(name))return;
+      seen.add(name);
+      clean.push({name,videoUrl:normalizeVideoUrl(obj.videoUrl||obj.url||'')});
     });
+    if(clean.length)out[c]=clean;
+  });
+  return out;
+}
+function escHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function escAttr(v){return escHtml(v);}
+function safeFileName(v){return String(v||'متدرب').replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,' ').trim().slice(0,80)||'متدرب';}
+function normalizeVideoUrl(v){
+  const raw=String(v||'').trim();
+  if(!raw)return'';
+  try{
+    const withScheme=/^https?:\/\//i.test(raw)?raw:'https://'+raw;
+    const u=new URL(withScheme);
+    if(!/^https?:$/i.test(u.protocol))return'';
+    return u.toString();
+  }catch(e){return'';}
+}
+function defaultExerciseLibrary(){
+  const out={};
+  Object.entries(LIB).forEach(([cat,items])=>out[cat]=items.map(name=>({name,videoUrl:''})));
+  return out;
+}
+function hasLibItems(lib){return Object.values(lib||{}).some(items=>Array.isArray(items)&&items.length);}
+function mergeExerciseLibrary(baseLib, extraLib){
+  const out=cleanLib(baseLib);
+  Object.entries(cleanLib(extraLib)).forEach(([cat,items])=>{
+    if(!out[cat])out[cat]=[];
+    items.forEach(item=>{
+      const i=out[cat].findIndex(x=>x.name===item.name);
+      if(i===-1)out[cat].push({...item});
+      else if(item.videoUrl)out[cat][i]={...out[cat][i],videoUrl:item.videoUrl};
+    });
+  });
+  return out;
+}
+function mergedLib(){return hasLibItems(customLib)?cleanLib(customLib):defaultExerciseLibrary();}
+function findExerciseMeta(name){
+  const n=String(name||'').trim();
+  if(!n)return{name:'',videoUrl:''};
+  for(const items of Object.values(mergedLib())){
+    const found=items.find(x=>x.name===n);
+    if(found)return found;
+  }
+  return{name:n,videoUrl:''};
+}
+async function loadExerciseLibrary(){
+  if(demoMode){
+    const saved=cleanLib(demoLibRead());
+    customLib=hasLibItems(saved)?saved:defaultExerciseLibrary();
+    if(!hasLibItems(saved))demoLibWrite(customLib);
+    return;
+  }
+  const uid=window.$auth?.currentUser?.uid;
+  if(!uid){customLib={};return;}
+  try{
+    let snap=await window.$getDoc(window.$doc(window.$db,'exerciseLibraries',uid));
+    if(!snap.exists()&&ALLOWED_COACH_UIDS.includes(uid)){
+      for(const legacyUid of DATA_COACH_UIDS.filter(x=>x!==uid)){
+        const legacySnap=await window.$getDoc(window.$doc(window.$db,'exerciseLibraries',legacyUid));
+        if(legacySnap.exists()){snap=legacySnap;break;}
+      }
+    }
+    if(snap.exists()){
+      const data=snap.data()||{};
+      const saved=cleanLib(snap.data().items||{});
+      customLib=data.seeded? saved : (hasLibItems(saved)?mergeExerciseLibrary(defaultExerciseLibrary(),saved):defaultExerciseLibrary());
+    }else{
+      customLib=defaultExerciseLibrary();
+    }
+    await saveExerciseLibrary();
+  }catch(e){customLib={};toast('تعذر تحميل مكتبة التمارين');}
+}
+async function saveExerciseLibrary(){
+  customLib=cleanLib(customLib);
+  if(demoMode){demoLibWrite(customLib);return true;}
+  const uid=window.$auth?.currentUser?.uid;
+  if(!uid){toast('سجل دخول المدرب أولاً');return false;}
+  try{
+    await window.$set(window.$doc(window.$db,'exerciseLibraries',uid),{coachUid:uid,items:customLib,seeded:true,updatedAt:new Date().toISOString()});
     return true;
-  }catch(e){toast('تعذر تحديث رابط QR');return false;}
-}
-async function fbDelPublic(id,code){
-  if(demoMode)return;
-  try{await window.$del(window.$doc(window.$db,'publicPlans',id));}catch(e){}
-  if(code)try{await window.$del(window.$doc(window.$db,'publicAccess',code));}catch(e){}
-}
-async function fbPublicOne(id){
-  if(demoMode)return demoRead().find(t=>t.id===id)||null;
-  try{const snap=await window.$getDoc(window.$doc(window.$db,'publicPlans',id));return snap.exists()?{id:snap.id,...snap.data()}:null;}catch(e){toast('تعذر فتح برنامج المتدرب');return null;}
+  }catch(e){toast('تعذر حفظ مكتبة التمارين');return false;}
 }
 
 /* NAV */
@@ -559,65 +704,112 @@ function show(id){document.getElementById('auth').classList.remove('on');documen
 function showAuth(){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById('auth').classList.add('on');window.scrollTo(0,0);}
 function goS1(){document.querySelector('.pbacts').style.display='flex';show('s1');loadTrainees();}
 function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2800);}
+function openDietSystem(){
+  if(curPlan?.id){showDiet('pw');return;}
+  toast('افتح متدرب أو عدّل بياناته لإضافة النظام الغذائي');
+}
+function isPublicPlanView(){return new URLSearchParams(location.search).has(PUBLIC_PLAN_PARAM);}
 
-/* QR */
-function planUrl(id){
-  const base=(location.protocol==='file:'||location.hostname==='127.0.0.1'||location.hostname==='localhost')
-    ? 'https://truck-f4c15.web.app/'
-    : location.href;
-  const url=new URL(base);
-  url.search='';url.hash='';
-  url.searchParams.set('plan',id);
-  return url.toString();
+/* EXERCISE LIBRARY */
+async function openExerciseLibrary(){
+  await loadExerciseLibrary();
+  renderExerciseLibrary();
+  show('s4');
 }
-async function openQr(id){
-  if(!id){toast('اختر متدرب أولاً');return;}
-  const t=trainees.find(x=>x.id===id)||curPlan||{};
-  if(t.id){
-    const ok=await fbPublishPlan(t);
-    const publicDoc=ok?await fbPublicOne(id):null;
-    if(!publicDoc){toast('لم يتم تجهيز رابط المتدرب بعد، احفظ المتدرب ثم جرّب QR');return;}
+function renderExerciseLibrary(){
+  const list=document.getElementById('libList');
+  const data=mergedLib(),cats=Object.keys(data);
+  document.getElementById('libCatList').innerHTML=cats.map(c=>`<option value="${escAttr(c)}"></option>`).join('');
+  if(!cats.length){list.innerHTML='<div class="empty"><span class="ei">📚</span><p>لا توجد تمارين في المكتبة بعد</p></div>';return;}
+  list.innerHTML=cats.map(cat=>{
+    const items=data[cat]||[];
+    return `<div class="libcat">
+      <div class="libcathead"><div class="libcatname">${escHtml(cat)}</div><div class="libcount">${items.length} تمرين</div></div>
+      <div class="libitems">${items.map(item=>{
+        return `<div class="libitem"><span>${escHtml(item.name)}</span>${item.videoUrl?`<a class="libvideo" href="${escAttr(item.videoUrl)}" target="_blank" rel="noopener">شرح</a>`:''}<button class="libedit" title="تعديل" data-cat="${escAttr(cat)}" data-name="${escAttr(item.name)}" onclick="editLibraryExerciseByButton(this)">ت</button><button class="libdel" title="حذف" data-cat="${escAttr(cat)}" data-name="${escAttr(item.name)}" onclick="deleteLibraryExerciseByButton(this)">×</button></div>`;
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+}
+function getLibraryExercise(cat,name){return (cleanLib(customLib)[cat]||[]).find(x=>x.name===name)||null;}
+function deleteLibraryExerciseByButton(btn){deleteLibraryExercise(btn.dataset.cat,btn.dataset.name);}
+function editLibraryExerciseByButton(btn){editLibraryExercise(btn.dataset.cat,btn.dataset.name);}
+async function addLibraryExercise(){
+  const cat=document.getElementById('libCat').value.trim(),name=document.getElementById('libExercise').value.trim(),videoUrl=normalizeVideoUrl(document.getElementById('libVideo').value);
+  if(!cat||!name){toast('أدخل القسم واسم التمرين');return;}
+  const all=mergedLib();
+  if((all[cat]||[]).some(x=>x.name===name)){toast('هذا التمرين موجود مسبقاً');return;}
+  if(!customLib[cat])customLib[cat]=[];
+  customLib[cat].push({name,videoUrl});
+  if(await saveExerciseLibrary()){
+    document.getElementById('libExercise').value='';
+    document.getElementById('libVideo').value='';
+    renderExerciseLibrary();
+    toast('✅ تمت إضافة التمرين للمكتبة');
   }
-  const link=planUrl(id);
-  document.getElementById('qrTitle').textContent='QR — '+(t.name||'برنامج المتدرب');
-  document.getElementById('qrLink').textContent=link;
-  document.getElementById('qrImg').src='https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=18&ecc=H&data='+encodeURIComponent(link);
-  document.getElementById('qrModal').classList.add('on');
 }
-function closeQr(e){if(e&&e.target.id!=='qrModal')return;document.getElementById('qrModal').classList.remove('on');}
-async function copyPlanLink(){await navigator.clipboard.writeText(document.getElementById('qrLink').textContent);toast('تم نسخ الرابط');}
-function downloadQr(){const a=document.createElement('a');a.href=document.getElementById('qrImg').src;a.download='coach-abdullah-emad-qr.png';a.click();}
+async function editLibraryExercise(cat,name){
+  customLib=cleanLib(customLib);
+  const item=getLibraryExercise(cat,name);
+  if(!item)return;
+  const newCat=prompt('القسم / العضلة',cat);
+  if(newCat===null)return;
+  const cleanCat=newCat.trim();
+  if(!cleanCat){toast('القسم لا يمكن أن يكون فارغاً');return;}
+  const newName=prompt('اسم التمرين',item.name);
+  if(newName===null)return;
+  const cleanName=newName.trim();
+  if(!cleanName){toast('اسم التمرين لا يمكن أن يكون فارغاً');return;}
+  const newVideo=prompt('رابط شرح التمرين - اختياري',item.videoUrl||'');
+  if(newVideo===null)return;
+  const videoUrl=normalizeVideoUrl(newVideo);
+  const duplicate=(customLib[cleanCat]||[]).some(x=>x.name===cleanName && !(cleanCat===cat&&name===item.name));
+  if(duplicate){toast('يوجد تمرين بنفس الاسم داخل هذا القسم');return;}
+  customLib[cat]=customLib[cat].filter(x=>x.name!==name);
+  if(!customLib[cat].length)delete customLib[cat];
+  if(!customLib[cleanCat])customLib[cleanCat]=[];
+  customLib[cleanCat].push({name:cleanName,videoUrl});
+  if(await saveExerciseLibrary()){renderExerciseLibrary();toast('✅ تم تعديل التمرين');}
+}
+async function deleteLibraryExercise(cat,name){
+  customLib=cleanLib(customLib);
+  if(!customLib[cat]||!customLib[cat].some(x=>x.name===name))return;
+  if(!confirm('حذف هذا التمرين من مكتبتك؟'))return;
+  customLib[cat]=customLib[cat].filter(x=>x.name!==name);
+  if(!customLib[cat].length)delete customLib[cat];
+  if(await saveExerciseLibrary()){renderExerciseLibrary();toast('تم حذف التمرين');}
+}
+
 function buildCerts(){
-  return `<section class="certsec">
-    <div class="certhead">
-      <div><div class="certtitle">اعتمادات وشهادات المدرب</div><div class="certsub">اضغط على أي شهادة لعرضها بحجم واضح</div></div>
-      <div class="certcount">${CERTS.length} شهادات</div>
-    </div>
-    <div class="certgrid">${CERTS.map((c,i)=>`<button class="certcard" onclick="openCert(${i})">
-      <div class="certthumb"><img src="${CERT_BASE+c[2]}" alt="${c[0]}" loading="lazy"></div>
-      <div class="certname">${c[0]}</div><div class="certorg">${c[1]}</div>
-    </button>`).join('')}</div>
-  </section>`;
+  return `<section class="certsec"><button class="certopen" onclick="openCertGallery()">شهادات المدرب</button></section>`;
+}
+function certCardsHtml(){
+  return `<div class="certgrid">${CERTS.map((c,i)=>`<button class="certcard" onclick="openCert(${i})">
+    <div class="certthumb"><img src="${CERT_BASE+c[2]}" alt="${c[0]}" loading="lazy"></div>
+    <div class="certname">${c[0]}</div><div class="certorg">${c[1]}</div>
+  </button>`).join('')}</div>`;
+}
+function openCertGallery(){
+  document.getElementById('certModalTitle').textContent='شهادات المدرب';
+  document.getElementById('certModalImg').removeAttribute('src');
+  document.getElementById('certModalImg').style.display='none';
+  let grid=document.getElementById('certModalGrid');
+  if(!grid){grid=document.createElement('div');grid.id='certModalGrid';document.querySelector('#certModal .certbox').insertBefore(grid,document.querySelector('#certModal .certbox .btn'));}
+  grid.innerHTML=certCardsHtml();
+  grid.style.display='block';
+  document.getElementById('certModal').classList.add('on');
 }
 function openCert(i){
   const c=CERTS[i];if(!c)return;
+  const grid=document.getElementById('certModalGrid');
+  if(grid)grid.style.display='none';
+  const img=document.getElementById('certModalImg');
   document.getElementById('certModalTitle').textContent=c[0]+' — '+c[1];
-  document.getElementById('certModalImg').src=CERT_BASE+c[2];
+  img.style.display='block';
+  img.src=CERT_BASE+c[2];
   document.getElementById('certModal').classList.add('on');
 }
 function closeCert(e){if(e&&e.target.id!=='certModal')return;document.getElementById('certModal').classList.remove('on');}
-async function openPublicPlan(id){
-  const t=await fbPublicOne(id);
-  if(!t){
-    document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">📋</span><p style="color:var(--gold);font-size:16px">هذا البرنامج غير جاهز للعرض بعد</p><p style="font-size:12px;color:var(--dim);margin-top:8px">اطلب من المدرب فتح زر QR مرة واحدة من الداشبورد لتجهيز الرابط.</p></div>';
-    document.getElementById('pbn').textContent='برنامج المتدرب';
-    show('s3');document.querySelector('.pbacts').style.display='none';return;
-  }
-  curPlan=t;document.getElementById('pbn').textContent='💪 '+t.name;
-  document.getElementById('planBody').innerHTML=buildPlan(t,false);
-  show('s3');document.querySelector('.pbacts').style.display='none';setTimeout(()=>swW(0),80);
-}
-
 /* BMI */
 function calcBMI(){const h=+document.getElementById('fht').value,w=+document.getElementById('fwt').value;document.getElementById('fbmi').value=(h&&w)?(w/((h/100)**2)).toFixed(1):'';}
 
@@ -633,9 +825,20 @@ function calcSubEnd(){
   const s=document.getElementById('fsd').value,m=document.getElementById('fmo').value||1;
   document.getElementById('fed').value=s?addMonths(s,m):'';
 }
+function addDays(dateStr,days){
+  const d=dateStr?new Date(dateStr+'T00:00:00'):new Date();
+  d.setDate(d.getDate()+Number(days||0));
+  return isoDate(d);
+}
+function daysBetween(startStr,endStr=isoDate(new Date())){
+  if(!startStr)return 0;
+  const start=new Date(startStr+'T00:00:00'),end=new Date(endStr+'T00:00:00');
+  return Math.max(0,Math.floor((end-start)/86400000));
+}
 function subInfo(t){
   const sub=t.subscription||{};
   if(!sub.endDate)return{state:'none',label:'لا يوجد اشتراك',days:null,cls:'none'};
+  if(sub.frozen)return{state:'frozen',label:'مجمّد',days:daysBetween(sub.frozenAt),cls:'frozen'};
   const today=new Date();today.setHours(0,0,0,0);
   const end=new Date(sub.endDate+'T00:00:00');
   const days=Math.ceil((end-today)/86400000);
@@ -645,10 +848,33 @@ function subInfo(t){
 }
 async function renewSub(id,months=1){
   const t=trainees.find(x=>x.id===id);if(!t)return;
-  const info=subInfo(t),base=info.state==='expired'||!t.subscription?.endDate?isoDate(new Date()):t.subscription.endDate;
-  const subscription={...(t.subscription||{}),startDate:t.subscription?.startDate||isoDate(new Date()),months:Number(t.subscription?.months||months),endDate:addMonths(base,months),renewedAt:new Date().toISOString()};
+  const sub=t.subscription||{},info=subInfo(t);
+  let base=info.state==='expired'||!sub.endDate?isoDate(new Date()):sub.endDate;
+  let frozenDays=0;
+  if(sub.frozen){
+    frozenDays=daysBetween(sub.frozenAt);
+    base=addDays(base,frozenDays);
+  }
+  const subscription={...sub,frozen:false,frozenAt:'',frozenEndDate:sub.frozen?isoDate(new Date()):(sub.frozenEndDate||''),unfrozenAt:sub.frozen?new Date().toISOString():(sub.unfrozenAt||''),startDate:sub.startDate||isoDate(new Date()),months:Number(sub.months||months),endDate:addMonths(base,months),renewedAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
   await fbU(id,{subscription});
-  t.subscription=subscription;updStats();renderList();toast('✅ تم تجديد الاشتراك شهر');
+  t.subscription=subscription;updStats();renderList();toast(frozenDays?`✅ تم التجديد مع إضافة ${frozenDays} يوم تجميد`:'✅ تم تجديد الاشتراك شهر');
+}
+async function toggleFreezeSub(id){
+  const t=trainees.find(x=>x.id===id);if(!t)return;
+  const sub=t.subscription||{};
+  if(!sub.endDate){toast('لا يوجد تاريخ انتهاء للاشتراك');return;}
+  let subscription;
+  if(sub.frozen){
+    const frozenDays=daysBetween(sub.frozenAt);
+    subscription={...sub,frozen:false,frozenAt:'',frozenEndDate:isoDate(new Date()),unfrozenAt:new Date().toISOString(),endDate:addDays(sub.endDate,frozenDays),updatedAt:new Date().toISOString()};
+    await fbU(id,{subscription});
+    t.subscription=subscription;updStats();renderList();toast(frozenDays?`تم فك التجميد وإضافة ${frozenDays} يوم للاشتراك`:'تم فك التجميد بدون تغيير تاريخ الانتهاء');
+  }else{
+    if(!confirm('تجميد اشتراك هذا المتدرب؟'))return;
+    subscription={...sub,frozen:true,frozenAt:isoDate(new Date()),updatedAt:new Date().toISOString()};
+    await fbU(id,{subscription});
+    t.subscription=subscription;updStats();renderList();toast('تم تجميد الاشتراك');
+  }
 }
 
 /* FORM BUILD */
@@ -683,7 +909,7 @@ function buildDays(){
           <label>اختر من مكتبة التمارين</label>
           <select class="libsel" id="lib${di}" onchange="fromLib(${di})">
             <option value="">— اختر تمريناً جاهزاً —</option>
-            ${Object.entries(LIB).map(([c,es])=>`<optgroup label="${c}">${es.map(e=>`<option value="${e}">${e}</option>`).join('')}</optgroup>`).join('')}
+            ${Object.entries(mergedLib()).map(([c,es])=>`<optgroup label="${escAttr(c)}">${es.map(e=>`<option value="${escAttr(e.name)}">${escHtml(e.name)}${e.videoUrl?' — شرح':''}</option>`).join('')}</optgroup>`).join('')}
           </select>
         </div>
         <div class="xlist" id="xb${di}"></div>
@@ -697,8 +923,10 @@ function tgRest(di){const on=document.getElementById('rst'+di).checked,b=documen
 function fromLib(di){const s=document.getElementById('lib'+di),v=s.value;if(!v)return;addRow(di,v);s.value='';}
 function addRow(di,name){
   const tb=document.getElementById('xb'+di),card=document.createElement('div');
+  const meta=findExerciseMeta(name);
   card.className='xcard';
-  card.innerHTML=`<div class="xhead"><input type="text" class="xn xname" value="${name}" placeholder="اسم التمرين"><button class="btn bo sm" type="button" onclick="autoFillExercise(this)">تعبئة</button><button class="xdel" onclick="this.closest('.xcard').remove()">✕</button></div><div class="xweeks">
+  card.dataset.videoUrl=meta.videoUrl||'';
+  card.innerHTML=`<div class="xhead"><input type="text" class="xn xname" value="${escAttr(name)}" placeholder="اسم التمرين"><button class="btn bo sm" type="button" onclick="autoFillExercise(this)">تعبئة</button><button class="xdel" onclick="this.closest('.xcard').remove()">✕</button></div><div class="xweeks">
     <div class="xwk"><label>الأسبوع 1</label><input type="text" class="xr1" value="${WKS[0].reps}" placeholder="عدات 3×20"><input type="text" class="xw1" placeholder="وزن خفيف"></div>
     <div class="xwk"><label>الأسبوع 2</label><input type="text" class="xr2" value="${WKS[1].reps}" placeholder="عدات 3×15"><input type="text" class="xw2" placeholder="وزن متوسط"></div>
     <div class="xwk"><label>الأسبوع 3</label><input type="text" class="xr3" value="${WKS[2].reps}" placeholder="عدات 3×10"><input type="text" class="xw3" placeholder="وزن ثقيل"></div>
@@ -724,7 +952,8 @@ function autoFillExercise(btn){
   toast('تمت تعبئة الأسابيع الستة');
 }
 function clearF(){
-  ['fn','fph','fht','fwt','fag','fno','fpa','fsn'].forEach(i=>document.getElementById(i).value='');
+  ['fn','fph','fwork','fht','fwt','fag','fno','fpa','fsn','fdcal','fdprotein','fdcarbs','fdfat','fdmeal1','fdmeal2','fdmeal3','fdmeal4','fdmeal5','fdmeal6','fdsnack','fdnotes'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('fdtype').value='انقاص وزن';
   document.getElementById('fbmi').value='';
   document.getElementById('fsd').value=isoDate(new Date());
   document.getElementById('fmo').value='1';
@@ -737,6 +966,7 @@ function clearF(){
 }
 function fillForm(t){
   document.getElementById('fn').value=t.name||'';document.getElementById('fph').value=t.phone||'';
+  document.getElementById('fwork').value=t.workNature||'';
   document.getElementById('fht').value=t.height||'';document.getElementById('fwt').value=t.weight||'';
   document.getElementById('fag').value=t.age||'';document.getElementById('fgo').value=t.goal||'بناء عضلات';
   document.getElementById('flv').value=t.level||'مبتدئ';document.getElementById('fno').value=t.notes||'';
@@ -746,6 +976,23 @@ function fillForm(t){
   document.getElementById('fed').value=sub.endDate||addMonths(document.getElementById('fsd').value,document.getElementById('fmo').value);
   document.getElementById('fpa').value=sub.paidAmount||'';
   document.getElementById('fsn').value=sub.note||'';
+  const diet=t.diet||{};
+  const dietType=document.getElementById('fdtype');
+  dietType.value=[...dietType.options].some(o=>o.value===(diet.type||''))?diet.type:'انقاص وزن';
+  const legacyMacro=parseLegacyMacro(diet.macro);
+  document.getElementById('fdcal').value=diet.calories||legacyMacro.calories||'';
+  document.getElementById('fdprotein').value=diet.protein||legacyMacro.protein||'';
+  document.getElementById('fdcarbs').value=diet.carbs||legacyMacro.carbs||'';
+  document.getElementById('fdfat').value=diet.fat||legacyMacro.fat||'';
+  const meals=Array.isArray(diet.meals)?diet.meals:[];
+  document.getElementById('fdmeal1').value=meals[0]||diet.breakfast||'';
+  document.getElementById('fdmeal2').value=meals[1]||diet.lunch||'';
+  document.getElementById('fdmeal3').value=meals[2]||diet.dinner||'';
+  document.getElementById('fdmeal4').value=meals[3]||'';
+  document.getElementById('fdmeal5').value=meals[4]||'';
+  document.getElementById('fdmeal6').value=meals[5]||'';
+  document.getElementById('fdsnack').value=diet.snack||diet.snacks||'';
+  document.getElementById('fdnotes').value=diet.notes||'';
   calcBMI();
   if(t.days)t.days.forEach((day,di)=>{
     if(day.rest){document.getElementById('rst'+di).checked=true;tgRest(di);return;}
@@ -755,6 +1002,7 @@ function fillForm(t){
     (day.exercises||[]).forEach(ex=>{
       addRow(di,ex.name);
       const rows=tb.querySelectorAll('.xcard'),r=rows[rows.length-1];
+      r.dataset.videoUrl=ex.videoUrl||findExerciseMeta(ex.name).videoUrl||'';
       r.querySelector('.xw1').value=ex.w1||'';r.querySelector('.xw2').value=ex.w2||'';
       r.querySelector('.xw3').value=ex.w3||'';r.querySelector('.xw4').value=ex.w4||'';
       r.querySelector('.xw5').value=ex.w5||'';r.querySelector('.xw6').value=ex.w6||'';
@@ -770,23 +1018,26 @@ function collectF(){
     const warmup=document.getElementById('wu'+di).value.trim();
     const notes=document.getElementById('dn'+di).value.trim();
     const rows=document.querySelectorAll(`#xb${di} .xcard`),exercises=[];
-    rows.forEach(r=>{const n=r.querySelector('.xn').value.trim();if(!n)return;exercises.push({name:n,r1:r.querySelector('.xr1').value.trim(),w1:r.querySelector('.xw1').value.trim(),r2:r.querySelector('.xr2').value.trim(),w2:r.querySelector('.xw2').value.trim(),r3:r.querySelector('.xr3').value.trim(),w3:r.querySelector('.xw3').value.trim(),r4:r.querySelector('.xr4').value.trim(),w4:r.querySelector('.xw4').value.trim(),r5:r.querySelector('.xr5').value.trim(),w5:r.querySelector('.xw5').value.trim(),r6:r.querySelector('.xr6').value.trim(),w6:r.querySelector('.xw6').value.trim()});});
+    rows.forEach(r=>{const n=r.querySelector('.xn').value.trim();if(!n)return;const meta=findExerciseMeta(n),videoUrl=r.dataset.videoUrl||meta.videoUrl||'';exercises.push({name:n,videoUrl,r1:r.querySelector('.xr1').value.trim(),w1:r.querySelector('.xw1').value.trim(),r2:r.querySelector('.xr2').value.trim(),w2:r.querySelector('.xw2').value.trim(),r3:r.querySelector('.xr3').value.trim(),w3:r.querySelector('.xw3').value.trim(),r4:r.querySelector('.xr4').value.trim(),w4:r.querySelector('.xw4').value.trim(),r5:r.querySelector('.xr5').value.trim(),w5:r.querySelector('.xw5').value.trim(),r6:r.querySelector('.xr6').value.trim(),w6:r.querySelector('.xw6').value.trim()});});
     return{rest:false,warmup,notes,exercises};
   });
   const startDate=document.getElementById('fsd').value,months=+document.getElementById('fmo').value||1,endDate=document.getElementById('fed').value||(startDate?addMonths(startDate,months):'');
   const subscription={startDate,months,endDate,paidAmount:+document.getElementById('fpa').value||0,note:document.getElementById('fsn').value.trim(),updatedAt:new Date().toISOString()};
-  return{name:document.getElementById('fn').value.trim(),phone:document.getElementById('fph').value.trim(),height:+document.getElementById('fht').value||0,weight:+document.getElementById('fwt').value||0,age:+document.getElementById('fag').value||0,goal:document.getElementById('fgo').value,level:document.getElementById('flv').value,notes:document.getElementById('fno').value.trim(),subscription,days,coachUid:window.$auth?.currentUser?.uid||'',updatedAt:new Date().toISOString(),createdAt:new Date().toISOString()};
+  const meals=[1,2,3,4,5,6].map(i=>document.getElementById('fdmeal'+i).value.trim());
+  const diet={type:document.getElementById('fdtype').value,calories:+document.getElementById('fdcal').value||0,protein:+document.getElementById('fdprotein').value||0,carbs:+document.getElementById('fdcarbs').value||0,fat:+document.getElementById('fdfat').value||0,meals,snack:document.getElementById('fdsnack').value.trim(),notes:document.getElementById('fdnotes').value.trim(),updatedAt:new Date().toISOString()};
+  return{name:document.getElementById('fn').value.trim(),phone:document.getElementById('fph').value.trim(),workNature:document.getElementById('fwork').value.trim(),height:+document.getElementById('fht').value||0,weight:+document.getElementById('fwt').value||0,age:+document.getElementById('fag').value||0,goal:document.getElementById('fgo').value,level:document.getElementById('flv').value,notes:document.getElementById('fno').value.trim(),subscription,diet,days,coachUid:window.$auth?.currentUser?.uid||'',updatedAt:new Date().toISOString(),createdAt:new Date().toISOString()};
 }
 async function saveTrainee(){
   const d=collectF();if(!d.name){toast('أدخل اسم المتدرب!');return;}
-  if(editId){const old=trainees.find(x=>x.id===editId)||{};d.createdAt=old.createdAt||d.createdAt;d.accessCode=old.accessCode||makeAccessCode(editId);await fbU(editId,d);await fbPublishPlan({id:editId,...d});const i=trainees.findIndex(x=>x.id===editId);if(i!==-1)trainees[i]={id:editId,...d};toast('✅ تم التحديث');}
-  else{const id=await fbA(d);if(id){const saved={id,...d,accessCode:makeAccessCode(id)};await fbU(id,{accessCode:saved.accessCode});await fbPublishPlan(saved);trainees.push(saved);toast('✅ تم الحفظ');}}
+  if(editId){const old=trainees.find(x=>x.id===editId)||{};d.createdAt=old.createdAt||d.createdAt;if(old.subscription?.frozen){d.subscription={...d.subscription,frozen:true,frozenAt:old.subscription.frozenAt||isoDate(new Date())};}if(old.diet?.macro&&!d.diet.macro)d.diet.macro=old.diet.macro;await fbU(editId,d);const i=trainees.findIndex(x=>x.id===editId);if(i!==-1)trainees[i]={id:editId,...d};toast('✅ تم التحديث');}
+  else{const id=await fbA(d);if(id){trainees.push({id,...d});toast('✅ تم الحفظ');}}
   goS1();
 }
 
 /* LIST */
 async function loadTrainees(){
   document.getElementById('tlist').innerHTML='<div class="ld"><div class="sp"></div>جاري التحميل...</div>';
+  await loadExerciseLibrary();
   trainees=await fbG();updStats();renderList();
 }
 function updStats(){
@@ -801,13 +1052,12 @@ function renderList(){
   if(!list.length){c.innerHTML=`<div class="empty"><span class="ei">🏋️</span><p>${q?'لا نتائج':'لا يوجد متدربون — أضف أول متدرب!'}</p></div>`;return;}
   const bmi=t=>t.height&&t.weight?(t.weight/((t.height/100)**2)).toFixed(1):'—';
   c.innerHTML=`<div class="tgrid">${list.map(t=>{
-    const si=subInfo(t),ed=t.subscription?.endDate||'—',daysTxt=si.days===null?'غير محدد':(si.days<0?`متأخر ${Math.abs(si.days)} يوم`:`باقي ${si.days} يوم`);
+    const si=subInfo(t),ed=t.subscription?.endDate||'—',daysTxt=si.state==='frozen'?(si.days>0?`مجمّد منذ ${si.days} يوم`:'مجمّد اليوم'):(si.days===null?'غير محدد':(si.days<0?`متأخر ${Math.abs(si.days)} يوم`:`باقي ${si.days} يوم`)),freezeBtn=si.state==='frozen'?'فك التجميد':'تجميد';
     return`
     <div class="tc">
-      <div class="tch"><div class="av">${(t.name||'?')[0]}</div><div><div class="tn">${t.name}</div><div class="tm">${t.goal||''} · ${t.level||''}</div></div></div>
+      <div class="tch"><div class="av">${escHtml((t.name||'?')[0])}</div><div><div class="tn">${escHtml(t.name||'')}</div><div class="tm">${escHtml([t.goal,t.level,t.workNature].filter(Boolean).join(' · '))}</div></div></div>
       <div class="tcb">
-        <div class="subline"><span>ينتهي: ${ed} · ${daysTxt}</span><span class="subpill ${si.cls}">${si.label}</span></div>
-        <div class="codeline"><span>كود المتدرب</span><span class="codeval">${t.accessCode||'يظهر بعد الحفظ'}</span></div>
+        <div class="subline"><span>ينتهي: ${escHtml(ed)} · ${escHtml(daysTxt)}</span><span class="subpill ${escAttr(si.cls)}">${escHtml(si.label)}</span></div>
         <div class="tss">
           <div class="tst"><span class="tv">${t.height||'—'}</span><span class="tl">سم</span></div>
           <div class="tst"><span class="tv">${t.weight||'—'}</span><span class="tl">كغ</span></div>
@@ -815,24 +1065,150 @@ function renderList(){
           <div class="tst"><span class="tv">${t.age||'—'}</span><span class="tl">سنة</span></div>
         </div>
         <div class="tacts">
-          <button class="btn bg sm" style="flex:1" onclick="viewPlan('${t.id}')">📋 عرض البرنامج</button>
+          <button class="btn bg sm" onclick="viewPlan('${t.id}')">عرض</button>
           <button class="btn bb sm" onclick="openQr('${t.id}')">QR</button>
-          <button class="btn bo sm" onclick="renewSub('${t.id}')">تجديد</button>
-          <button class="btn bb sm" onclick="openForm('${t.id}')">✏️</button>
-          <button class="btn br sm" onclick="delT('${t.id}')">🗑</button>
+          <button class="btn bgreen sm" onclick="renewSub('${t.id}')">تجديد</button>
+          <button class="btn bf sm" onclick="toggleFreezeSub('${t.id}')">${freezeBtn}</button>
+          <button class="btn bb sm" onclick="openForm('${t.id}')">تعديل</button>
+          <button class="btn br sm" onclick="delT('${t.id}')">مسح</button>
         </div>
       </div>
     </div>`}).join('')}</div>`;
 }
-async function delT(id){if(!confirm('حذف هذا المتدرب؟'))return;const t=trainees.find(x=>x.id===id);await fbD(id);await fbDelPublic(id,t?.accessCode);trainees=trainees.filter(t=>t.id!==id);updStats();renderList();toast('🗑 تم الحذف');}
+async function delT(id){if(!confirm('حذف هذا المتدرب؟'))return;await fbD(id);trainees=trainees.filter(t=>t.id!==id);updStats();renderList();toast('🗑 تم الحذف');}
+
+/* PUBLIC PLAN / QR */
+function publicPlanId(t){
+  if(t.publicPlanId)return t.publicPlanId;
+  const raw=new Uint8Array(12);
+  if(window.crypto?.getRandomValues)window.crypto.getRandomValues(raw);
+  else raw.forEach((_,i)=>raw[i]=Math.floor(Math.random()*256));
+  return Array.from(raw,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function publicPlanData(t,id){
+  return {
+    id,
+    traineeId:t.id||'',
+    coachUid:window.$auth?.currentUser?.uid||t.coachUid||'',
+    name:t.name||'',
+    workNature:t.workNature||'',
+    height:t.height||0,
+    weight:t.weight||0,
+    age:t.age||0,
+    goal:t.goal||'',
+    level:t.level||'',
+    notes:t.notes||'',
+    diet:t.diet||{},
+    days:t.days||[],
+    updatedAt:new Date().toISOString()
+  };
+}
+function publicPlanUrl(id){return `${location.origin}/?${PUBLIC_PLAN_PARAM}=${encodeURIComponent(id)}`;}
+function qrImageUrl(url){return `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(url)}`;}
+async function openQr(id){
+  const t=trainees.find(x=>x.id===id);if(!t)return;
+  if(!window.$db||!window.$set){toast('Firebase غير متصل');return;}
+  const pid=publicPlanId(t),data=publicPlanData(t,pid);
+  try{
+    await window.$set(window.$doc(window.$db,'publicPlans',pid),data);
+    if(!t.publicPlanId){await fbU(id,{publicPlanId:pid});t.publicPlanId=pid;}
+    const url=publicPlanUrl(pid);
+    document.getElementById('qrLink').value=url;
+    document.getElementById('qrOpen').href=url;
+    document.getElementById('qrImg').src=qrImageUrl(url);
+    document.getElementById('qrModal').classList.add('on');
+  }catch(e){toast('تعذر إنشاء رابط QR');}
+}
+async function copyQrLink(){
+  const link=document.getElementById('qrLink').value;
+  try{await navigator.clipboard.writeText(link);toast('تم نسخ الرابط');}
+  catch(e){document.getElementById('qrLink').select();toast('انسخ الرابط يدوياً');}
+}
+function closeQr(e){if(e&&e.target.id!=='qrModal')return;document.getElementById('qrModal').classList.remove('on');}
+async function loadPublicPlanFromUrl(){
+  const id=new URLSearchParams(location.search).get(PUBLIC_PLAN_PARAM);
+  if(!id)return false;
+  try{
+    const snap=await window.$getDoc(window.$doc(window.$db,'publicPlans',id));
+    if(!snap.exists()){show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">🔒</span><p>الرابط غير موجود أو تم إيقافه</p></div>';return true;}
+    curPlan={id,...snap.data()};
+    document.getElementById('pbn').textContent='💪 '+(curPlan.name||'برنامج المتدرب');
+    document.getElementById('planBody').innerHTML=buildPlan(curPlan,false);
+    document.querySelector('.pbacts').style.display='none';
+    startPlanCtaRotation();
+    show('s3');setTimeout(()=>swW(0),80);
+    return true;
+  }catch(e){
+    show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">⚠️</span><p>تعذر فتح الرابط، حاول مرة أخرى</p></div>';
+    return true;
+  }
+}
 
 /* PLAN */
+function downloadPlanById(id){
+  const t=trainees.find(x=>x.id===id);if(!t)return;
+  curPlan=t;
+  dlPlan();
+}
 function viewPlan(id){
   const t=trainees.find(x=>x.id===id);if(!t)return;
   curPlan=t;document.getElementById('pbn').textContent='💪 '+t.name;
   document.getElementById('planBody').innerHTML=buildPlan(t,false);
+  startPlanCtaRotation();
   document.querySelector('.pbacts').style.display='flex';
   show('s3');setTimeout(()=>swW(0),80);
+}
+function dietMeals(d){const old=[d.breakfast,d.lunch,d.dinner,d.snacks];return (Array.isArray(d.meals)?d.meals:old).slice(0,6);}
+function dietMacroItems(d){
+  const items=[
+    ['السعرات',d.calories,'سعرة'],
+    ['البروتين',d.protein,'غ'],
+    ['الكارب',d.carbs,'غ'],
+    ['الدهون',d.fat,'غ']
+  ];
+  return items.filter(x=>Number(x[1])>0);
+}
+function parseLegacyMacro(v){
+  const text=String(v||''),out={calories:0,protein:0,carbs:0,fat:0};
+  if(!text.trim())return out;
+  const cal=text.match(/(\d+(?:\.\d+)?)\s*(?:سع|سعر|كال|cal|kcal)/i);
+  const protein=text.match(/(\d+(?:\.\d+)?)\s*(?:غ|g|جم)?\s*(?:بروتين|protein)/i)||text.match(/(?:بروتين|protein)\D*(\d+(?:\.\d+)?)/i);
+  const carbs=text.match(/(\d+(?:\.\d+)?)\s*(?:غ|g|جم)?\s*(?:كارب|كاربوهيدرات|carb|carbs)/i)||text.match(/(?:كارب|كاربوهيدرات|carb|carbs)\D*(\d+(?:\.\d+)?)/i);
+  const fat=text.match(/(\d+(?:\.\d+)?)\s*(?:غ|g|جم)?\s*(?:دهون|دهن|fat|fats)/i)||text.match(/(?:دهون|دهن|fat|fats)\D*(\d+(?:\.\d+)?)/i);
+  if(cal)out.calories=Number(cal[1])||0;
+  if(protein)out.protein=Number(protein[1])||0;
+  if(carbs)out.carbs=Number(carbs[1])||0;
+  if(fat)out.fat=Number(fat[1])||0;
+  return out;
+}
+function hasDiet(t){const d=t.diet||{};return String(d.macro||d.snack||d.snacks||d.notes||'').trim()||dietMacroItems(d).length||dietMeals(d).some(x=>String(x||'').trim());}
+function buildDiet(t,pfx){
+  const d=t.diet||{},meals=dietMeals(d).map((m,i)=>['الوجبة '+(i+1),m]).filter(x=>String(x[1]||'').trim()),macros=dietMacroItems(d);
+  if(!hasDiet(t))return `<div class="wcont" id="${pfx}-diet"><div class="empty"><span class="ei">🥗</span><p style="color:var(--gold);font-size:16px">لم يتم إضافة نظام غذائي بعد</p><p style="font-size:12px;color:var(--dim);margin-top:8px">لم يتم تحديد النظام الغذائي لهذا المتدرب بعد.</p></div></div>`;
+  return `<div class="wcont" id="${pfx}-diet">
+    <div class="dietnote"><div class="pni"><p>🥗 <strong>${escHtml(d.type||'النظام الغذائي')}</strong>${d.macro?' — '+escHtml(d.macro):''}</p></div></div>
+    ${macros.length?`<div class="macrogrid">${macros.map(m=>`<div class="macrocard"><span class="mv">${escHtml(m[1])}${m[2]?` ${escHtml(m[2])}`:''}</span><div class="ml">${escHtml(m[0])}</div></div>`).join('')}</div>`:''}
+    <div class="dietgrid">${meals.map(m=>`<div class="mealcard"><div class="mealhead">${escHtml(m[0])}</div><div class="mealbody">${escHtml(m[1])}</div></div>`).join('')}${(d.snack||d.snacks)?`<div class="mealcard"><div class="mealhead">سناك</div><div class="mealbody">${escHtml(d.snack||d.snacks)}</div></div>`:''}</div>
+    ${d.notes?`<div class="pnote"><div class="pni"><p>📝 <strong>ملاحظات غذائية:</strong> ${escHtml(d.notes)}</p></div></div>`:''}
+  </div>`;
+}
+function startPlanCtaRotation(){
+  if(ctaTimer)clearInterval(ctaTimer);
+  const btn=document.querySelector('.plancta a');
+  if(!btn)return;
+  let i=0;
+  setPlanCta(btn,i);
+  ctaTimer=setInterval(()=>{
+    const current=document.querySelector('.plancta a');
+    if(!current){clearInterval(ctaTimer);ctaTimer=null;return;}
+    i=(i+1)%CTA_TEXTS.length;
+    setPlanCta(current,i);
+  },4000);
+}
+function setPlanCta(btn,i){
+  btn.textContent=CTA_TEXTS[i];
+  btn.classList.remove('cta0','cta1','cta2','cta3');
+  btn.classList.add('cta'+(i%4));
 }
 function buildPlan(t,sa){
   const bmi=t.height&&t.weight?(t.weight/((t.height/100)**2)).toFixed(1):'—';
@@ -847,18 +1223,19 @@ function buildPlan(t,sa){
           return`<div class="dc">
             <div class="dch"><span class="dcn">${dn}</span><span class="dcf">💪 تمرين</span></div>
             <div class="dcb">
-              ${day.warmup?`<div class="wusec"><div class="stl">الإحماء</div>${day.warmup.split('،').map(x=>`<div class="wuli">${x.trim()}</div>`).join('')}</div>`:''}
-              ${day.notes?`<div class="wusec"><div class="stl">ملاحظات اليوم</div>${day.notes.split(/\n|،/).map(x=>x.trim()).filter(Boolean).map(x=>`<div class="wuli">${x}</div>`).join('')}</div>`:''}
+              ${day.warmup?`<div class="wusec"><div class="stl">الإحماء</div>${day.warmup.split('،').map(x=>`<div class="wuli">${escHtml(x.trim())}</div>`).join('')}</div>`:''}
+              ${day.notes?`<div class="wusec"><div class="stl">ملاحظات اليوم</div>${day.notes.split(/\n|،/).map(x=>x.trim()).filter(Boolean).map(x=>`<div class="wuli">${escHtml(x)}</div>`).join('')}</div>`:''}
               <div class="stl">التمارين — ${w.reps}</div>
-              ${exs.map((ex,ei)=>{const reps=ex['r'+(wi+1)]||w.reps,weight=ex['w'+(wi+1)]||'';return`<div class="exi"><div class="exn">${ei+1}</div><div class="exii"><div class="exnm">${ex.name}</div><div class="exs">${reps}</div></div>${weight?`<div class="wbg">${weight}</div>`:''}</div>`}).join('')}
+              ${exs.map((ex,ei)=>{const reps=ex['r'+(wi+1)]||w.reps,weight=ex['w'+(wi+1)]||'',videoUrl=normalizeVideoUrl(ex.videoUrl||findExerciseMeta(ex.name).videoUrl);return`<div class="exi"><div class="exn">${ei+1}</div><div class="exii"><div class="exnm"><span>${escHtml(ex.name)}</span>${videoUrl?`<a class="exhelp" href="${escAttr(videoUrl)}" target="_blank" rel="noopener">شرح</a>`:''}</div><div class="exs">${escHtml(reps)}</div></div>${weight?`<div class="wbg">${escHtml(weight)}</div>`:''}</div>`}).join('')}
             </div></div>`;
         }).join('')}
       </div>
     </div>`).join('');
-  const wn=WKS.map((w,wi)=>`<button class="wtab ${wi===0?'on':''}" onclick="${sa?'sw':'swW'}(${wi})"><span class="wi">${w.icon}</span>${w.lbl}<span class="wr">${w.reps} | ${w.int}</span></button>`).join('');
-  return`<div class="plh"><div class="plname">${t.name}</div><div class="plsub">${t.goal||''} · ${t.level||''} · 6 أسابيع تقدمية</div><div class="sbar"><div class="sb"><span class="sv">${t.height||'—'}</span><span class="sl">سم الطول</span></div><div class="sb"><span class="sv">${t.weight||'—'}</span><span class="sl">كغ الوزن</span></div><div class="sb"><span class="sv">${bmi}</span><span class="sl">BMI</span></div><div class="sb"><span class="sv">${t.age||'—'}</span><span class="sl">العمر</span></div></div></div>${buildCerts()}${t.notes?`<div class="pnote"><div class="pni"><p>📝 <strong>ملاحظات المدرب:</strong> ${t.notes}</p></div></div>`:''}<div class="wnav">${wn}</div>${whtml}<div class="plfoot">الأوزان تقديرية — اضبطها حسب قدرتك الفعلية</div>`;
+  const wn=WKS.map((w,wi)=>`<button class="wtab ${wi===0?'on':''}" onclick="${sa?'sw':'swW'}(${wi})"><span class="wi">${w.icon}</span>${w.lbl}<span class="wr">${w.reps} | ${w.int}</span></button>`).join('')+`<button class="wtab" onclick="showDiet('${pfx}')"><span class="wi">🥗</span>النظام الغذائي</button>`;
+  return`<div class="plh"><div class="plname">${escHtml(t.name||'')}</div><div class="plsub">${escHtml([t.goal,t.level,t.workNature,'6 أسابيع تقدمية'].filter(Boolean).join(' · '))}</div><div class="sbar"><div class="sb"><span class="sv">${escHtml(t.height||'—')}</span><span class="sl">سم الطول</span></div><div class="sb"><span class="sv">${escHtml(t.weight||'—')}</span><span class="sl">كغ الوزن</span></div><div class="sb"><span class="sv">${escHtml(bmi)}</span><span class="sl">BMI</span></div><div class="sb"><span class="sv">${escHtml(t.age||'—')}</span><span class="sl">العمر</span></div></div><div class="plancta"><a href="${DESIGNER_WHATSAPP}" target="_blank" rel="noopener">${escHtml(CTA_TEXTS[0])}</a></div></div>${buildCerts()}${t.notes?`<div class="pnote"><div class="pni"><p>📝 <strong>ملاحظات المدرب:</strong> ${escHtml(t.notes)}</p></div></div>`:''}<div class="wnav">${wn}</div>${whtml}${buildDiet(t,pfx)}<div class="plfoot">الأوزان تقديرية — اضبطها حسب قدرتك الفعلية</div>`;
 }
 function swW(n){document.querySelectorAll('.wcont').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.wtab').forEach(e=>e.classList.remove('on'));const wc=document.getElementById('pw-'+n)||document.getElementById('sw-'+n);const tabs=document.querySelectorAll('.wtab');if(wc)wc.classList.add('on');if(tabs[n])tabs[n].classList.add('on');}
+function showDiet(pfx='pw'){document.querySelectorAll('.wcont').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.wtab').forEach(e=>e.classList.remove('on'));const wc=document.getElementById(pfx+'-diet');if(wc)wc.classList.add('on');const tabs=document.querySelectorAll('.wtab');if(tabs.length)tabs[tabs.length-1].classList.add('on');}
 
 /* DOWNLOAD */
 function dlPlan(){
@@ -866,31 +1243,90 @@ function dlPlan(){
   const t=curPlan,inner=buildPlan(t,true);
   const css=document.querySelector('style').textContent;
   const certModal=`<div class="modal" id="certModal" onclick="closeCert(event)"><div class="certbox" onclick="event.stopPropagation()"><h3 id="certModalTitle">شهادة المدرب</h3><img class="certfull" id="certModalImg" alt="شهادة المدرب"><button class="btn br" onclick="closeCert()">إغلاق</button></div></div>`;
-  const script=`<script>const CERT_BASE=${JSON.stringify(CERT_BASE)};const CERTS=${JSON.stringify(CERTS)};function openCert(i){const c=CERTS[i];if(!c)return;document.getElementById('certModalTitle').textContent=c[0]+' — '+c[1];document.getElementById('certModalImg').src=CERT_BASE+c[2];document.getElementById('certModal').classList.add('on');}function closeCert(e){if(e&&e.target.id!=='certModal')return;document.getElementById('certModal').classList.remove('on');}function sw(n){document.querySelectorAll('.wcont').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.wtab').forEach(e=>e.classList.remove('on'));const wc=document.getElementById('sw-'+n);const tabs=document.querySelectorAll('.wtab');if(wc)wc.classList.add('on');if(tabs[n])tabs[n].classList.add('on');}<\/script>`;
-  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>برنامج ${t.name}</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"><style>${css.replace(/\/\* ── S[12] .+[\s\S]+?(?=\/\* ── S3)/,'').replace('#s1{','#s1_off{').replace('#s2{','#s2_off{')}</style></head><body style="background:#0A0A0A">${certModal}${inner}${script}</body></html>`;
+  const script=`<script>
+    const CERT_BASE=${JSON.stringify(CERT_BASE)};
+    const CERTS=${JSON.stringify(CERTS)};
+    const CTA_TEXTS=${JSON.stringify(CTA_TEXTS)};
+    function certCardsHtml(){return '<div class="certgrid">'+CERTS.map((c,i)=>'<button class="certcard" onclick="openCert('+i+')"><div class="certthumb"><img src="'+CERT_BASE+c[2]+'" alt="'+c[0]+'" loading="lazy"></div><div class="certname">'+c[0]+'</div><div class="certorg">'+c[1]+'</div></button>').join('')+'</div>';}
+    function openCertGallery(){document.getElementById('certModalTitle').textContent='شهادات المدرب';const img=document.getElementById('certModalImg');img.removeAttribute('src');img.style.display='none';let grid=document.getElementById('certModalGrid');if(!grid){grid=document.createElement('div');grid.id='certModalGrid';document.querySelector('#certModal .certbox').insertBefore(grid,document.querySelector('#certModal .certbox .btn'));}grid.innerHTML=certCardsHtml();grid.style.display='block';document.getElementById('certModal').classList.add('on');}
+    function openCert(i){const c=CERTS[i];if(!c)return;const grid=document.getElementById('certModalGrid');if(grid)grid.style.display='none';const img=document.getElementById('certModalImg');document.getElementById('certModalTitle').textContent=c[0]+' — '+c[1];img.style.display='block';img.src=CERT_BASE+c[2];document.getElementById('certModal').classList.add('on');}
+    function closeCert(e){if(e&&e.target.id!=='certModal')return;document.getElementById('certModal').classList.remove('on');}
+    function setPlanCta(btn,i){btn.textContent=CTA_TEXTS[i];btn.classList.remove('cta0','cta1','cta2','cta3');btn.classList.add('cta'+(i%4));}
+    function startPlanCtaRotation(){const btn=document.querySelector('.plancta a');if(!btn)return;let i=0;setPlanCta(btn,i);setInterval(()=>{i=(i+1)%CTA_TEXTS.length;setPlanCta(btn,i);},4000);}
+    function sw(n){document.querySelectorAll('.wcont').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.wtab').forEach(e=>e.classList.remove('on'));const wc=document.getElementById('sw-'+n);const tabs=document.querySelectorAll('.wtab');if(wc)wc.classList.add('on');if(tabs[n])tabs[n].classList.add('on');}
+    function showDiet(pfx='sw'){document.querySelectorAll('.wcont').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.wtab').forEach(e=>e.classList.remove('on'));const wc=document.getElementById(pfx+'-diet');if(wc)wc.classList.add('on');const tabs=document.querySelectorAll('.wtab');if(tabs.length)tabs[tabs.length-1].classList.add('on');}
+    startPlanCtaRotation();
+  <\/script>`;  const html=`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>برنامج ${escHtml(t.name||'متدرب')}</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"><style>${css.replace(/\/\* ── S[12] .+[\s\S]+?(?=\/\* ── S3)/,'').replace('#s1{','#s1_off{').replace('#s2{','#s2_off{')}</style></head><body style="background:#0A0A0A">${certModal}${inner}${script}</body></html>`;
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`برنامج-${t.name}.html`;a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`برنامج-${safeFileName(t.name)}.html`;a.click();
   toast('✅ تم التحميل — أرسله واتساب!');
 }
 
-/* INIT */
-window.addEventListener('fbReady',()=>{
-  const publicPlanId=new URLSearchParams(location.search).get('plan');
-  if(!window.$fb||!window.$auth){
-    showAuth();
-    document.querySelector('.authmsg').innerHTML='<span style="color:var(--red);font-weight:700">Firebase غير متصل.</span><br>أضف إعدادات Firebase في أعلى الملف ثم فعّل Authentication.';
-    return;
-  }
-  if(publicPlanId){openPublicPlan(publicPlanId);return;}
-  window.$authState(window.$auth,user=>{
-    if(user){
-      document.getElementById('coachEmail').textContent=user.email||'مدرب';
-      show('s1');loadTrainees();
-    }else{
-      trainees=[];document.getElementById('coachEmail').textContent='—';document.getElementById('demoMark').classList.remove('on');showAuth();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBvQN6b5WGuDEayMYH3NQkBdW2qRor_UGg",
+    authDomain: "truck-f4c15.firebaseapp.com",
+    projectId: "truck-f4c15",
+    storageBucket: "truck-f4c15.firebasestorage.app",
+    messagingSenderId: "709260876125",
+    appId: "1:709260876125:web:71a9abc54267ad3f27b0b4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  const auth = getAuth(app);
+
+  window.$db = db;
+  window.$col = collection;
+  window.$add = addDoc;
+  window.$get = getDocs;
+  window.$getDoc = getDoc;
+  window.$doc = doc;
+  window.$del = deleteDoc;
+  window.$upd = updateDoc;
+  window.$set = setDoc;
+  window.$query = query;
+  window.$where = where;
+  window.$auth = auth;
+  window.$authState = onAuthStateChanged;
+  window.$signIn = signInWithEmailAndPassword;
+  window.$signOut = signOut;
+  window.$fb = true;
+
+  // مراقبة الجلسة والتحكم بالصفحات وتدفق البيانات
+  onAuthStateChanged(auth, async (user) => {
+    if (typeof isPublicPlanView === "function" && isPublicPlanView()) {
+      if (typeof loadPublicPlanFromUrl === "function") await loadPublicPlanFromUrl();
+      return;
+    }
+
+    if (user) {
+      if (typeof isAllowedCoach === "function" && !isAllowedCoach(user)) {
+        await signOut(auth);
+        if (typeof showAuth === "function") showAuth();
+        if (typeof toast === "function") toast('هذا الحساب غير مخوّل للدخول — UID: '+(user.uid||'غير معروف'));
+        return;
+      }
+
+      const emailElem = document.getElementById('coachEmail');
+      if (emailElem) emailElem.textContent = user.email || 'مدرب';
+      
+      if (typeof show === "function") show('s1');
+      if (typeof loadTrainees === "function") {
+        await loadTrainees();
+      }
+    } else {
+      if (typeof showAuth === "function") showAuth();
     }
   });
-});
+
+  window.dispatchEvent(new Event('fbReady'));
 </script>
 </body>
 </html>

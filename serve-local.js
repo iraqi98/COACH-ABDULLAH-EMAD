@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const root = process.cwd();
+const root = path.join(process.cwd(), 'public');
 const port = 8000;
 const types = {
   '.html': 'text/html; charset=utf-8',
