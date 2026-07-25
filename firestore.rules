@@ -42,7 +42,8 @@ service cloud.firestore {
     }
 
     match /publicPlans/{planId} {
-      allow read: if true;
+      allow get: if true;
+      allow list: if false;
       allow create, update: if allowedCoach()
         && request.resource.data.coachUid == request.auth.uid;
       allow delete: if ownsExisting();
