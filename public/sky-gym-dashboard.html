@@ -698,6 +698,7 @@ async function loadExerciseLibrary(){
   if(!uid){customLib={};return;}
   try{
     let snap=await window.$getDoc(window.$doc(window.$db,'exerciseLibraries',uid));
+    const ownDocExists=snap.exists();
     if(!snap.exists()&&ALLOWED_COACH_UIDS.includes(uid)){
       for(const legacyUid of DATA_COACH_UIDS.filter(x=>x!==uid)){
         const legacySnap=await window.$getDoc(window.$doc(window.$db,'exerciseLibraries',legacyUid));
@@ -711,7 +712,15 @@ async function loadExerciseLibrary(){
     }else{
       customLib=defaultExerciseLibrary();
     }
-    await saveExerciseLibrary();
+    if(ownDocExists){
+      console.log(`[exerciseLibraries] تخطي seeding: الوثيقة موجودة مسبقاً لـ coachUid=${uid}`);
+    }else{
+      const seedUid=window.$auth?.currentUser?.uid;
+      if(seedUid){
+        await saveExerciseLibrary();
+        console.log(`[exerciseLibraries] seeding ناجح | coachUid=${seedUid} | الوقت=${new Date().toISOString()}`);
+      }
+    }
   }catch(e){customLib={};toast('تعذر تحميل مكتبة التمارين');}
 }
 async function saveExerciseLibrary(){
@@ -873,6 +882,17 @@ function subInfo(t){
   if(days<=7)return{state:'soon',label:'ينتهي قريباً',days,cls:'soon'};
   return{state:'ok',label:'فعال',days,cls:'ok'};
 }
+function publicPlanAccessInfo(t){
+  const info=subInfo(t);
+  return {state:info.state,label:info.label,days:info.days,endDate:t.subscription?.endDate||'',frozen:!!t.subscription?.frozen};
+}
+function publicPlanExpired(t){
+  return (t.publicAccess?.state||publicPlanAccessInfo(t).state)==='expired';
+}
+function expiredPublicPlanHtml(t){
+  const end=t.publicAccess?.endDate||t.subscription?.endDate||'';
+  return `<div class="empty"><span class="ei">🔒</span><p style="color:var(--gold);font-size:16px">انتهى الاشتراك</p><p style="font-size:12px;color:var(--dim);margin-top:8px">${end?`انتهى اشتراك هذه الخطة بتاريخ ${escHtml(end)}. `:''}يرجى التجديد لإعادة تفعيل الرابط.</p></div>`;
+}
 async function renewSub(id,months=1){
   const t=trainees.find(x=>x.id===id);if(!t)return;
   const sub=t.subscription||{},info=subInfo(t);
@@ -884,7 +904,7 @@ async function renewSub(id,months=1){
   }
   const subscription={...sub,frozen:false,frozenAt:'',frozenEndDate:sub.frozen?isoDate(new Date()):(sub.frozenEndDate||''),unfrozenAt:sub.frozen?new Date().toISOString():(sub.unfrozenAt||''),startDate:sub.startDate||isoDate(new Date()),months:Number(sub.months||months),endDate:addMonths(base,months),renewedAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
   await fbU(id,{subscription});
-  t.subscription=subscription;updStats();renderList();toast(frozenDays?`✅ تم التجديد مع إضافة ${frozenDays} يوم تجميد`:'✅ تم تجديد الاشتراك شهر');
+  t.subscription=subscription;await syncPublicPlan(t);updStats();renderList();toast(frozenDays?`✅ تم التجديد مع إضافة ${frozenDays} يوم تجميد`:'✅ تم تجديد الاشتراك شهر');
 }
 async function toggleFreezeSub(id){
   const t=trainees.find(x=>x.id===id);if(!t)return;
@@ -895,12 +915,12 @@ async function toggleFreezeSub(id){
     const frozenDays=daysBetween(sub.frozenAt);
     subscription={...sub,frozen:false,frozenAt:'',frozenEndDate:isoDate(new Date()),unfrozenAt:new Date().toISOString(),endDate:addDays(sub.endDate,frozenDays),updatedAt:new Date().toISOString()};
     await fbU(id,{subscription});
-    t.subscription=subscription;updStats();renderList();toast(frozenDays?`تم فك التجميد وإضافة ${frozenDays} يوم للاشتراك`:'تم فك التجميد بدون تغيير تاريخ الانتهاء');
+    t.subscription=subscription;await syncPublicPlan(t);updStats();renderList();toast(frozenDays?`تم فك التجميد وإضافة ${frozenDays} يوم للاشتراك`:'تم فك التجميد بدون تغيير تاريخ الانتهاء');
   }else{
     if(!confirm('تجميد اشتراك هذا المتدرب؟'))return;
     subscription={...sub,frozen:true,frozenAt:isoDate(new Date()),updatedAt:new Date().toISOString()};
     await fbU(id,{subscription});
-    t.subscription=subscription;updStats();renderList();toast('تم تجميد الاشتراك');
+    t.subscription=subscription;await syncPublicPlan(t);updStats();renderList();toast('تم تجميد الاشتراك');
   }
 }
 
@@ -1070,7 +1090,7 @@ function collectF(){
 }
 async function saveTrainee(){
   const d=collectF();if(!d.name){toast('أدخل اسم المتدرب!');return;}
-  if(editId){const old=trainees.find(x=>x.id===editId)||{};d.createdAt=old.createdAt||d.createdAt;if(old.subscription?.frozen){d.subscription={...d.subscription,frozen:true,frozenAt:old.subscription.frozenAt||isoDate(new Date())};}if(old.diet?.macro&&!d.diet.macro)d.diet.macro=old.diet.macro;await fbU(editId,d);const i=trainees.findIndex(x=>x.id===editId);if(i!==-1)trainees[i]={id:editId,...d};toast('✅ تم التحديث');}
+  if(editId){const old=trainees.find(x=>x.id===editId)||{};d.createdAt=old.createdAt||d.createdAt;if(old.publicPlanId)d.publicPlanId=old.publicPlanId;if(old.subscription?.frozen){d.subscription={...d.subscription,frozen:true,frozenAt:old.subscription.frozenAt||isoDate(new Date())};}if(old.diet?.macro&&!d.diet.macro)d.diet.macro=old.diet.macro;await fbU(editId,d);const i=trainees.findIndex(x=>x.id===editId);if(i!==-1)trainees[i]={id:editId,...d};await syncPublicPlan({id:editId,...d});toast('✅ تم التحديث');}
   else{const id=await fbA(d);if(id){trainees.push({id,...d});toast('✅ تم الحفظ');}}
   goS1();
 }
@@ -1141,10 +1161,16 @@ function publicPlanData(t,id){
     goal:t.goal||'',
     level:t.level||'',
     notes:t.notes||'',
+    publicAccess:publicPlanAccessInfo(t),
     diet:t.diet||{},
     days:daysWithExerciseVideos(t.days),
     updatedAt:new Date().toISOString()
   };
+}
+async function syncPublicPlan(t){
+  if(demoMode||!window.$db||!window.$set||!t?.publicPlanId)return;
+  try{await window.$set(window.$doc(window.$db,'publicPlans',t.publicPlanId),publicPlanData(t,t.publicPlanId));}
+  catch(e){toast('تعذر تحديث الرابط العام');}
 }
 async function syncExistingPublicPlans(){
   if(demoMode||!window.$db||!window.$set)return;
@@ -1185,6 +1211,12 @@ async function loadPublicPlanFromUrl(){
     if(!snap.exists()){show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">🔒</span><p>الرابط غير موجود أو تم إيقافه</p></div>';return true;}
     curPlan={id,...snap.data()};
     document.getElementById('pbn').textContent='💪 '+(curPlan.name||'برنامج المتدرب');
+    if(publicPlanExpired(curPlan)){
+      document.getElementById('planBody').innerHTML=expiredPublicPlanHtml(curPlan);
+      document.querySelector('.pbacts').style.display='none';
+      show('s3');
+      return true;
+    }
     document.getElementById('planBody').innerHTML=buildPlan(curPlan,false);
     document.querySelector('.pbacts').style.display='none';
     startPlanCtaRotation();
@@ -1320,6 +1352,7 @@ function dlPlan(){
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBvQN6b5WGuDEayMYH3NQkBdW2qRor_UGg",
@@ -1331,6 +1364,14 @@ function dlPlan(){
   };
 
   const app = initializeApp(firebaseConfig);
+  // App Check — حماية من السكربتات والبوتات
+  if (["localhost", "127.0.0.1"].includes(location.hostname)) {
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN = true; // وضع التطوير المحلي فقط
+  }
+  initializeAppCheck(app, {
+provider: new ReCaptchaV3Provider("6Lcg320tAAAAAGHGVObyLLJvYudxOpO8ALEp9KI8"),
+    isTokenAutoRefreshEnabled: true
+  });
   const db  = getFirestore(app);
   const auth = getAuth(app);
 
