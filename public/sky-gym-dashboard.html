@@ -1188,6 +1188,7 @@ function publicPlanData(t,id){
     level:t.level||'',
     notes:t.notes||'',
     publicAccess:publicPlanAccessInfo(t),
+    active:!publicPlanExpired(t),
     diet:t.diet||{},
     days:daysWithExerciseVideos(t.days),
     updatedAt:new Date().toISOString()
@@ -1249,7 +1250,12 @@ async function loadPublicPlanFromUrl(){
     show('s3');setTimeout(()=>swW(0),80);
     return true;
   }catch(e){
-    document.querySelector('.pbacts').style.display='none';show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">⚠️</span><p>تعذر فتح الرابط، حاول مرة أخرى</p></div>';
+    document.querySelector('.pbacts').style.display='none';show('s3');
+    // permission-denied = القاعدة رفضت القراءة (active:false) — ليست مشكلة شبكة
+    const denied=e?.code==='permission-denied';
+    document.getElementById('planBody').innerHTML=denied
+      ?'<div class="empty"><span class="ei">🔒</span><p>انتهى الاشتراك أو تم إيقاف الرابط</p></div>'
+      :'<div class="empty"><span class="ei">⚠️</span><p>تعذر فتح الرابط، حاول مرة أخرى</p></div>';
     return true;
   }
 }
