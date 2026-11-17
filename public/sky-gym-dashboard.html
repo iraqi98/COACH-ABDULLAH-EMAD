@@ -864,7 +864,12 @@ function closeCert(e){if(e&&e.target.id!=='certModal')return;document.getElement
 function calcBMI(){const h=+document.getElementById('fht').value,w=+document.getElementById('fwt').value;document.getElementById('fbmi').value=(h&&w)?(w/((h/100)**2)).toFixed(1):'';}
 
 /* SUBSCRIPTIONS */
-function isoDate(d){return d.toISOString().slice(0,10);}
+function isoDate(d){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 function addMonths(dateStr,months){
   const d=dateStr?new Date(dateStr+'T00:00:00'):new Date();
   const day=d.getDate();d.setMonth(d.getMonth()+Number(months||1));
