@@ -2,18 +2,9 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
 
-    function allowedCoach() {
-      return signedIn()
-        && request.auth.uid == 'v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2'
-        && request.auth.token.email == 'alinajmiq1@gmail.com';
-    }
-
-    function dataCoachUid(uid) {
-      return uid in [
+    function coachUids() {
+      return [
         'v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2',
         'eQpPtTto5IXmooFieqx97qkGFqg2',
         'eQpPtTto5lXmooFieqx97qkGFqg2',
@@ -21,31 +12,48 @@ service cloud.firestore {
       ];
     }
 
+    function isCoach() {
+      return request.auth != null
+        && request.auth.uid == 'v8TKT4Pmv3Sf4mMMR9aQcJEwgdA2';
+    }
+
     function ownsExisting() {
-      return allowedCoach() && dataCoachUid(resource.data.coachUid);
+      return isCoach() && resource.data.coachUid in coachUids();
     }
 
     function ownsIncoming() {
-      return allowedCoach() && request.resource.data.coachUid == request.auth.uid;
+      return isCoach() && request.resource.data.coachUid in coachUids();
     }
 
     match /trainees/{traineeId} {
       allow create: if ownsIncoming();
-      allow read, update, delete: if ownsExisting();
+      allow read, delete: if ownsExisting();
+      allow update: if ownsExisting() && ownsIncoming();
+
+      match /{sub=**} {
+        allow read, write: if isCoach();
+      }
     }
 
     match /exerciseLibraries/{coachId} {
-      allow read, delete: if allowedCoach() && dataCoachUid(coachId);
-      allow create, update: if allowedCoach()
-        && request.auth.uid == coachId
-        && request.resource.data.coachUid == request.auth.uid;
+      allow read, delete: if isCoach() && coachId in coachUids();
+      allow create, update: if isCoach()
+        && coachId in coachUids()
+        && request.resource.data.coachUid in coachUids();
+    }
+
+    match /publicAccess/{codeId} {
+      allow read, delete: if ownsExisting();
+      allow create: if ownsIncoming();
+      allow update: if ownsExisting() && ownsIncoming();
     }
 
     match /publicPlans/{planId} {
-      allow get: if true;
+      allow get: if resource.data.get('active', true) == true;
       allow list: if false;
-      allow create, update: if allowedCoach()
-        && request.resource.data.coachUid == request.auth.uid;
+
+      allow create: if ownsIncoming();
+      allow update: if ownsExisting() && ownsIncoming();
       allow delete: if ownsExisting();
     }
 
