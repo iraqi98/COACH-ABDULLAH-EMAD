@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coach Abdullah Emad — نظام المدرب</title>
+<script>
+/* وضع المتدرب العام: يُحدَّد قبل رسم الصفحة لإخفاء كل واجهات المدرب */
+if(new URLSearchParams(location.search).has('plan'))document.documentElement.classList.add('pubplan');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -259,6 +263,10 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
 @media(max-width:760px){.wnav{display:flex;overflow-x:auto;padding:18px 14px 0;scroll-snap-type:x mandatory;}.wtab{flex:0 0 145px;scroll-snap-align:start;}.sbar{grid-template-columns:repeat(2,1fr);max-width:420px;}.sb:nth-child(2){border-left:none}.sb:nth-child(1),.sb:nth-child(2){border-bottom:1px solid #2a2a2a;}.plh{padding:42px 16px 26px;}.plsub{font-size:12px;}.pb{align-items:flex-start}.pbacts{width:100%;overflow-x:auto}.pbacts .btn{white-space:nowrap;}.certhead{align-items:flex-start;flex-direction:column}.certgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:3px}.certcard{flex:0 0 210px;scroll-snap-align:start}.certthumb{height:126px;}.certbox{padding:10px}.certfull{max-height:70vh;}}
 @media(max-width:600px){.tgrid,.dgrid{grid-template-columns:1fr;}.fr{grid-template-columns:1fr;}.fr.r3,.fr.r4{grid-template-columns:1fr 1fr;}.dstats{flex-wrap:wrap;}.xweeks{grid-template-columns:1fr 1fr;}.dgrid{padding:0 12px;margin-top:14px;}.exi{grid-template-columns:24px minmax(0,1fr);}.wbg{grid-column:2;justify-self:start;margin-top:2px;}.plname{font-size:36px;}}
 @media(max-width:600px){.xhead{grid-template-columns:1fr 64px 30px;}}
+/* ── PUBLIC PLAN MODE (?plan=) — لا وصول لواجهات المدرب ── */
+html.pubplan #auth,html.pubplan #s1,html.pubplan #s2,html.pubplan #s4,html.pubplan .pbacts{display:none!important;}
+html.pubplan #s3{display:block!important;}
+html.pubplan #planBody:empty::before{content:'جاري تحميل البرنامج...';display:block;text-align:center;padding:55px 20px;color:var(--dim);}
 @media(max-width:430px){#auth{padding:14px}.authbox{border-radius:6px}.authhead{padding:25px 18px 18px}.authlogo{font-size:26px}.authbody{padding:18px}.authbody .fl input{height:43px}}
 </style>
 </head>
@@ -465,6 +473,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--txt);min-
   <div id="libList" class="liblist"></div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" integrity="sha384-mZT2gIty7ZDdOGkxfP6joZcYdMW1Jvj9dRlfpTmaJAKKXTqzygtB22k7FLe+KZC1" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 /* DATA */
 const DAYS=['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
@@ -596,9 +605,15 @@ async function fbG(){
     return [...byId.values()];
   }catch(e){toast('تعذر تحميل المتدربين');return[];}
 }
-async function fbD(id){
-  if(demoMode){demoWrite(demoRead().filter(t=>t.id!==id));return;}
-  try{await window.$del(window.$doc(window.$db,'trainees',id));}catch(e){toast('خطأ حذف');}
+async function fbD(id,publicPlanId){
+  if(demoMode){demoWrite(demoRead().filter(t=>t.id!==id));return true;}
+  try{
+    const batch=window.$batch(window.$db);
+    batch.delete(window.$doc(window.$db,'trainees',id));
+    if(publicPlanId)batch.delete(window.$doc(window.$db,'publicPlans',publicPlanId));
+    await batch.commit();
+    return true;
+  }catch(e){toast('خطأ حذف');return false;}
 }
 async function fbU(id,d){
   if(demoMode){demoWrite(demoRead().map(t=>t.id===id?{id,...t,...d}:t));return;}
@@ -730,14 +745,13 @@ async function saveExerciseLibrary(){
   if(!uid){toast('سجل دخول المدرب أولاً');return false;}
   try{
     await window.$set(window.$doc(window.$db,'exerciseLibraries',uid),{coachUid:uid,items:customLib,seeded:true,updatedAt:new Date().toISOString()});
-    await syncExistingPublicPlans();
     return true;
   }catch(e){toast('تعذر حفظ مكتبة التمارين');return false;}
 }
 
 /* NAV */
-function show(id){document.getElementById('auth').classList.remove('on');document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
-function showAuth(){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById('auth').classList.add('on');window.scrollTo(0,0);}
+function show(id){if(isPublicPlanView()&&id!=='s3')return;document.getElementById('auth').classList.remove('on');document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function showAuth(){if(isPublicPlanView())return;document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById('auth').classList.add('on');window.scrollTo(0,0);}
 function goS1(){document.querySelector('.pbacts').style.display='flex';show('s1');loadTrainees();}
 function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2800);}
 function openDietSystem(){
@@ -886,8 +900,16 @@ function publicPlanAccessInfo(t){
   const info=subInfo(t);
   return {state:info.state,label:info.label,days:info.days,endDate:t.subscription?.endDate||'',frozen:!!t.subscription?.frozen};
 }
+function localIsoDate(d=new Date()){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 function publicPlanExpired(t){
-  return (t.publicAccess?.state||publicPlanAccessInfo(t).state)==='expired';
+  const access=t.publicAccess||{};
+  const frozen=access.frozen??!!t.subscription?.frozen;
+  if(frozen)return false;
+  const end=String(access.endDate||t.subscription?.endDate||'').slice(0,10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(end))return false;
+  return localIsoDate()>end;
 }
 function expiredPublicPlanHtml(t){
   const end=t.publicAccess?.endDate||t.subscription?.endDate||'';
@@ -1101,7 +1123,6 @@ async function loadTrainees(){
   await loadExerciseLibrary();
   trainees=await fbG();
   updStats();renderList();
-  syncExistingPublicPlans();
 }
 function updStats(){
   const n=trainees.length,ok=trainees.filter(t=>subInfo(t).state==='ok').length,soon=trainees.filter(t=>subInfo(t).state==='soon').length,expired=trainees.filter(t=>subInfo(t).state==='expired').length;
@@ -1138,7 +1159,12 @@ function renderList(){
       </div>
     </div>`}).join('')}</div>`;
 }
-async function delT(id){if(!confirm('حذف هذا المتدرب؟'))return;await fbD(id);trainees=trainees.filter(t=>t.id!==id);updStats();renderList();toast('🗑 تم الحذف');}
+async function delT(id){
+  if(!confirm('حذف هذا المتدرب؟'))return;
+  const t=trainees.find(x=>x.id===id);
+  if(!(await fbD(id,t?.publicPlanId)))return;
+  trainees=trainees.filter(x=>x.id!==id);updStats();renderList();toast('🗑 تم الحذف');
+}
 
 /* PUBLIC PLAN / QR */
 function publicPlanId(t){
@@ -1172,17 +1198,15 @@ async function syncPublicPlan(t){
   try{await window.$set(window.$doc(window.$db,'publicPlans',t.publicPlanId),publicPlanData(t,t.publicPlanId));}
   catch(e){toast('تعذر تحديث الرابط العام');}
 }
-async function syncExistingPublicPlans(){
-  if(demoMode||!window.$db||!window.$set)return;
-  const published=trainees.filter(t=>t.publicPlanId);
-  if(!published.length)return;
-  await Promise.allSettled(published.map(t=>window.$set(
-    window.$doc(window.$db,'publicPlans',t.publicPlanId),
-    publicPlanData(t,t.publicPlanId)
-  )));
-}
 function publicPlanUrl(id){return `${location.origin}/?${PUBLIC_PLAN_PARAM}=${encodeURIComponent(id)}`;}
-function qrImageUrl(url){return `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(url)}`;}
+function qrImageUrl(url){
+  // توليد محلي بالكامل — الرابط لا يغادر المتصفح
+  if(typeof window.qrcode!=='function')return'';
+  const qr=window.qrcode(0,'M');
+  qr.addData(url);
+  qr.make();
+  return qr.createDataURL(8,0);
+}
 async function openQr(id){
   const t=trainees.find(x=>x.id===id);if(!t)return;
   if(!window.$db||!window.$set){toast('Firebase غير متصل');return;}
@@ -1193,7 +1217,9 @@ async function openQr(id){
     const url=publicPlanUrl(pid);
     document.getElementById('qrLink').value=url;
     document.getElementById('qrOpen').href=url;
-    document.getElementById('qrImg').src=qrImageUrl(url);
+    const qrSrc=qrImageUrl(url),qrImg=document.getElementById('qrImg');
+    if(qrSrc){qrImg.src=qrSrc;qrImg.style.display='block';}
+    else{qrImg.removeAttribute('src');qrImg.style.display='none';toast('تعذر توليد QR — انسخ الرابط');}
     document.getElementById('qrModal').classList.add('on');
   }catch(e){toast('تعذر إنشاء رابط QR');}
 }
@@ -1208,7 +1234,7 @@ async function loadPublicPlanFromUrl(){
   if(!id)return false;
   try{
     const snap=await window.$getDoc(window.$doc(window.$db,'publicPlans',id));
-    if(!snap.exists()){show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">🔒</span><p>الرابط غير موجود أو تم إيقافه</p></div>';return true;}
+    if(!snap.exists()){document.querySelector('.pbacts').style.display='none';show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">🔒</span><p>الرابط غير موجود أو تم إيقافه</p></div>';return true;}
     curPlan={id,...snap.data()};
     document.getElementById('pbn').textContent='💪 '+(curPlan.name||'برنامج المتدرب');
     if(publicPlanExpired(curPlan)){
@@ -1223,7 +1249,7 @@ async function loadPublicPlanFromUrl(){
     show('s3');setTimeout(()=>swW(0),80);
     return true;
   }catch(e){
-    show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">⚠️</span><p>تعذر فتح الرابط، حاول مرة أخرى</p></div>';
+    document.querySelector('.pbacts').style.display='none';show('s3');document.getElementById('planBody').innerHTML='<div class="empty"><span class="ei">⚠️</span><p>تعذر فتح الرابط، حاول مرة أخرى</p></div>';
     return true;
   }
 }
@@ -1350,7 +1376,7 @@ function dlPlan(){
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, setDoc, query, where, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 
@@ -1386,6 +1412,7 @@ provider: new ReCaptchaV3Provider("6Lcg320tAAAAAGHGVObyLLJvYudxOpO8ALEp9KI8"),
   window.$set = setDoc;
   window.$query = query;
   window.$where = where;
+  window.$batch = writeBatch;
   window.$auth = auth;
   window.$authState = onAuthStateChanged;
   window.$signIn = signInWithEmailAndPassword;
